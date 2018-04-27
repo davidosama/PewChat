@@ -13,76 +13,62 @@ import java.util.*;
  *
  * @author ToniGeorge
  */
-public class MyClient  {
-     // initialize socket and input output streams
-    private Socket socket            = null;
-    private DataInputStream  input   = null;
-    private DataOutputStream out     = null;
+public class MyClient {
+    // initialize socket and input output streams
+
+    private Socket socket = null;
+    private DataInputStream input = null;
+    private DataOutputStream out = null;
     Scanner scn = new Scanner(System.in);
-    public MyClient(String address, int port)
-        {
-    // establish a connection
-            try
-            {
-                socket = new Socket(address, port);
-                System.out.println("Connected");
+    Thread readThread;
+    String Messages = "";
 
-                // takes input from terminal
-                input  = new DataInputStream(System.in);
+    public MyClient(String address, int port) {
+        // establish a connection
+        try {
+            System.out.println("Connected");
+            socket = new Socket(address, port);
+            // takes input from terminal
+            input = new DataInputStream(socket.getInputStream());
 
-                // sends output to the socket
-                out    = new DataOutputStream(socket.getOutputStream());
-            }
-            catch(UnknownHostException u)
-            {
-                System.out.println(u);
-            }
-            catch(IOException i)
-            {
-                System.out.println(i);
-            }
-        
+            // sends output to the socket
+            out = new DataOutputStream(socket.getOutputStream());
+            ReadMessage();
+            readThread.start();
+
+        } catch (UnknownHostException u) {
+            System.out.println(u);
+        } catch (IOException i) {
+            System.out.println(i);
         }
-    void ReadMessage (){
-        Thread readMessage = new Thread(new Runnable() 
-        {
-            @Override
-            public void run() {
- 
-                while (true) {
-                    try {
-                        // read the message sent to this client
-                        String msg = input.readUTF();
-                        System.out.println(msg);
-                    } catch (IOException e) {
- 
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
- 
 
     }
-    void SendMessage (){
-        Thread sendMessage = new Thread(new Runnable() 
-        {
+
+    void ReadMessage() {
+        readThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true) {
- 
-                    // read the message to deliver.
-                    String msg = scn.nextLine();
-                     
-                    try {
-                        // write on the output stream
-                        out.writeUTF(msg);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    // read the message sent to this client
+                    String msg = input.readUTF();
+                    Messages += "\n"+msg;
+                } catch (IOException e) {
+
+                    e.printStackTrace();
                 }
             }
         });
+        readThread.start();
     }
-       
+
+    void SendMessage(String message) {
+        try {
+            // write on the output stream
+            out.writeUTF(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

@@ -5,17 +5,24 @@
  */
 package pewchatclient;
 
+import java.io.IOException;
+
 /**
  *
  * @author minarafla
  */
 public class ClientFrame extends javax.swing.JFrame {
+    
+    
+    MyClient client ;
+    static String msgRecieved;
 
     /**
      * Creates new form ClientFrame
      */
     public ClientFrame() {
         initComponents();
+        
     }
 
     /**
@@ -31,7 +38,7 @@ public class ClientFrame extends javax.swing.JFrame {
         UsernameTextField = new javax.swing.JTextField();
         UsernameLabel = new javax.swing.JLabel();
         PortNumTextField = new javax.swing.JTextField();
-        PortNumberLabel2 = new javax.swing.JLabel();
+        AddressLabel = new javax.swing.JLabel();
         AddressTextField = new javax.swing.JTextField();
         DisconnectBtn = new javax.swing.JButton();
         ConnectBtn = new javax.swing.JButton();
@@ -60,7 +67,7 @@ public class ClientFrame extends javax.swing.JFrame {
             }
         });
 
-        PortNumberLabel2.setText("Address");
+        AddressLabel.setText("Address");
 
         AddressTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,7 +119,7 @@ public class ClientFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(UsernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(PortNumberLabel2)
+                                .addComponent(AddressLabel)
                                 .addGap(18, 18, 18)
                                 .addComponent(AddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
@@ -136,7 +143,7 @@ public class ClientFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(PortNumberLabel2)
+                    .addComponent(AddressLabel)
                     .addComponent(AddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(UsernameLabel)
                     .addComponent(UsernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -163,7 +170,7 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_UsernameTextFieldActionPerformed
 
     private void PortNumTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PortNumTextFieldActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_PortNumTextFieldActionPerformed
 
     private void AddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddressTextFieldActionPerformed
@@ -175,11 +182,20 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_DisconnectBtnActionPerformed
 
     private void ConnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectBtnActionPerformed
-        // TODO add your handling code here:
+        client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
+        client.ReadMessage();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ChatTextArea.setText(client.Messages);
+            }
+        });
     }//GEN-LAST:event_ConnectBtnActionPerformed
 
     private void SendBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendBtnActionPerformed
-        // TODO add your handling code here:
+        client.SendMessage(MsgTextArea.getText());
+        ChatTextArea.append("\n"+MsgTextArea.getText());
+        
     }//GEN-LAST:event_SendBtnActionPerformed
 
     /**
@@ -218,6 +234,7 @@ public class ClientFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel AddressLabel;
     private javax.swing.JTextField AddressTextField;
     private javax.swing.JTextArea ChatTextArea;
     private javax.swing.JButton ConnectBtn;
@@ -225,7 +242,6 @@ public class ClientFrame extends javax.swing.JFrame {
     private javax.swing.JTextArea MsgTextArea;
     private javax.swing.JTextField PortNumTextField;
     private javax.swing.JLabel PortNumberLabel;
-    private javax.swing.JLabel PortNumberLabel2;
     private javax.swing.JButton SendBtn;
     private javax.swing.JLabel UsernameLabel;
     private javax.swing.JTextField UsernameTextField;

@@ -34,7 +34,7 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="UsernameTextField" min="-2" pref="70" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="PortNumberLabel2" min="-2" max="-2" attributes="0"/>
+                              <Component id="AddressLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="AddressTextField" min="-2" pref="70" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -67,7 +67,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="PortNumberLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="AddressLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="AddressTextField" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="UsernameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="UsernameTextField" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -111,7 +111,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PortNumTextFieldActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JLabel" name="PortNumberLabel2">
+    <Component class="javax.swing.JLabel" name="AddressLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Address"/>
       </Properties>
