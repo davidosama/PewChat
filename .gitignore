@@ -22,16 +22,16 @@
 hs_err_pid*
 
 # netbeans files
-nbproject/private/
-dist/
-build/
-nbbuild/
-nbdist/
-nbactions.xml
-nb-configuration.xml
+/**/nbproject/private/
+/**/dist/
+/**/build/
+/**/nbbuild/
+/**/nbdist/
+/**/nbactions.xml
+/**/nb-configuration.xml
 
 # intelliJ idea files
-.DS_Store
-.idea/
-out/
-*.iml
+/**/.DS_Store
+/**/.idea/
+/**/out/
+/**/*.iml
