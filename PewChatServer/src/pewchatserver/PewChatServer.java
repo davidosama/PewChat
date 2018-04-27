@@ -1,16 +1,19 @@
 package pewchatserver;
 
-import java.net.*;
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class PewChatServer {
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-
+    static ArrayList<User> users = new ArrayList<User>();
+    
+    public static void main(String[] args) throws IOException {
+        Server server = new Server("localhost", 9999);
+        Thread t = new Thread(server);
+        server.run();
     }
     
 }
