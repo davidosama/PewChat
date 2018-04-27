@@ -40,14 +40,14 @@ public class User implements Runnable {
                 }
                  
                 // break the string into message and recipient part
-                StringTokenizer st = new StringTokenizer(received, "#");
-                String MsgToSend = st.nextToken();
-                String recipient = st.nextToken();
-                System.out.println(name+" is sending: "+MsgToSend);
+//                StringTokenizer st = new StringTokenizer(received, "#");
+//                String MsgToSend = st.nextToken();
+//                String recipient = st.nextToken();
+                System.out.println(name+" is sending: "+received);
                 
                 for (int i = 0; i<PewChatServer.users.size(); i++) 
                     {
-                        PewChatServer.users.get(i).outputStream.writeUTF(name+" : "+MsgToSend);
+                        PewChatServer.users.get(i).outputStream.writeUTF(name+" : "+received);
                     }
             } catch (IOException e) {
                  

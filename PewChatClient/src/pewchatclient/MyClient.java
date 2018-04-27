@@ -21,7 +21,7 @@ public class MyClient {
     private DataOutputStream out = null;
     Scanner scn = new Scanner(System.in);
     Thread readThread;
-    String Messages = "";
+    StringBuffer Messages = new StringBuffer();
 
     public MyClient(String address, int port) {
         // establish a connection
@@ -33,8 +33,6 @@ public class MyClient {
 
             // sends output to the socket
             out = new DataOutputStream(socket.getOutputStream());
-            ReadMessage();
-            readThread.start();
 
         } catch (UnknownHostException u) {
             System.out.println(u);
@@ -45,16 +43,28 @@ public class MyClient {
     }
 
     void ReadMessage() {
+        System.out.println("ReadMessage called.");
         readThread = new Thread(new Runnable() {
             @Override
             public void run() {
+                System.out.println("ReadMessage thread called.");
                 try {
-                    // read the message sent to this client
-                    String msg = input.readUTF();
-                    Messages += "\n"+msg;
-                } catch (IOException e) {
+                    while (true) {
+                        System.out.println("ReadMessage while called.");
 
+                        // read the message sent to this client
+                        String msg = input.readUTF();
+                        System.out.println("Message received: " + msg);
+                        Messages.append("\n").append(msg);
+                        System.out.println("Messages STRING: " + Messages);
+
+                    }
+                } catch (IOException e) {
+                    System.out.println("IO Exception");
                     e.printStackTrace();
+                } catch (Exception ex) {
+                    System.out.println("Exception");
+                    ex.printStackTrace();
                 }
             }
         });

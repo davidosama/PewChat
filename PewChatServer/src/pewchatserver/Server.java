@@ -56,6 +56,9 @@ public class Server implements Runnable {
                  // i is used for naming only, and can be replaced
                  // by any naming scheme
                  i++;
+                 for(int i=0; i<PewChatServer.users.size(); i++){
+                     System.out.println(PewChatServer.users.get(i).name+" is connected");
+                 }
              } catch (IOException ex) {
                  Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
              }

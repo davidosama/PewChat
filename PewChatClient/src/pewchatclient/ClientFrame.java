@@ -187,15 +187,18 @@ public class ClientFrame extends javax.swing.JFrame {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                ChatTextArea.setText(client.Messages);
+                while(true){
+//                    System.out.println("Reading messages...");
+                    ChatTextArea.setText(client.Messages.toString());    
+                }
             }
         });
+        t.start();
     }//GEN-LAST:event_ConnectBtnActionPerformed
 
     private void SendBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendBtnActionPerformed
         client.SendMessage(MsgTextArea.getText());
-        ChatTextArea.append("\n"+MsgTextArea.getText());
-        
+        ChatTextArea.append("\n"+MsgTextArea.getText());        
     }//GEN-LAST:event_SendBtnActionPerformed
 
     /**
