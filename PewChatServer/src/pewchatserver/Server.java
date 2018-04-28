@@ -39,7 +39,7 @@ public class Server implements Runnable {
                  System.out.println("Creating a new user handler for this client...");
                  
                  // Create a new handler object for handling this request.
-                 User newUser = new User(socket, "Client "+i, inputStream, outputStream);
+                 User newUser = new User(socket, "Client"+i, inputStream, outputStream);
                  
                  // Create a new Thread with this object.
                  Thread t = new Thread(newUser);

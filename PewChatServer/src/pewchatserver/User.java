@@ -24,30 +24,30 @@ public class User implements Runnable {
 
     @Override
     public void run() {
-        String received;
+        String recieved;
         while (true) 
         {
             try
             {
                 // receive the string
-                received = inputStream.readUTF();
+                recieved = inputStream.readUTF();
                  
-                System.out.println(received);
-                if(received.equals("logout")){
+                System.out.println(recieved);
+                if(recieved.equals("logout")){
                     this.isOnline = false;
                     this.socket.close();
                     break;
                 }
-                 
+                
                 // break the string into message and recipient part
 //                StringTokenizer st = new StringTokenizer(received, "#");
 //                String MsgToSend = st.nextToken();
 //                String recipient = st.nextToken();
-                System.out.println(name+" is sending: "+received);
+                System.out.println(name+" is sending: "+recieved);
                 
                 for (int i = 0; i<PewChatServer.users.size(); i++) 
                     {
-                        PewChatServer.users.get(i).outputStream.writeUTF(name+" : "+received);
+                        PewChatServer.users.get(i).outputStream.writeUTF(name+" : "+recieved);
                     }
             } catch (IOException e) {
                  

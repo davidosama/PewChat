@@ -23,6 +23,10 @@ public class MyClient {
     Thread readThread;
     StringBuffer Messages = new StringBuffer();
     boolean newMessage = false;
+    String status="";
+    Boolean isConnected=false;
+    static Map<String,String> OtherUserStatus = new HashMap<String,String>();
+    boolean UserStatusChanged=false;
 
     public MyClient(String address, int port) {
         // establish a connection
@@ -34,7 +38,8 @@ public class MyClient {
 
             // sends output to the socket
             out = new DataOutputStream(socket.getOutputStream());
-
+            isConnected=true;
+            
         } catch (UnknownHostException u) {
             System.out.println(u);
         } catch (IOException i) {
@@ -55,10 +60,38 @@ public class MyClient {
 
                         // read the message sent to this client
                         String msg = input.readUTF();
-                        System.out.println("Message received: " + msg);
-                        Messages.append("\n").append(msg);
-                        newMessage = true;
-                        System.out.println("Messages STRING: " + Messages);
+
+                        if (msg.contains("###")) {
+                            //esm el client hayb2a men awel el msg le 7ad abl el "#"
+                            String clientName = msg.substring(0, msg.indexOf("#")-3);
+                            String clientStatus = msg.substring(msg.length()-1);
+                            String s="";
+                            
+                            if (clientStatus.contains("1")) {
+                                s = "Online";
+                            } else if (clientStatus.contains("2")) {
+                                s = "Busy";
+                            } else if (clientStatus.contains("3")) {
+                                s = "Away";
+                            } else if (clientStatus.contains("4")) {
+                                s = "Offline";
+                            }
+                            else {
+                                s ="ERRRORRRRR!!";
+                            }
+                            System.out.println("CLIENT NAME IS "+clientName);
+                            OtherUserStatus.put(clientName, s);
+                            System.out.println("HashMap in ReadMessage size "+OtherUserStatus.size());
+                            
+                            System.out.println("UserStatusChanged = TRUE");
+                            UserStatusChanged = true;
+                                
+                        } else {
+                            System.out.println("Message received: " + msg);
+                            Messages.append("\n").append(msg);
+                            newMessage = true;
+                            System.out.println("Messages STRING: " + Messages);
+                        }
 
                     }
                 } catch (IOException e) {
@@ -68,8 +101,10 @@ public class MyClient {
                     System.out.println("Exception");
                     ex.printStackTrace();
                 }
+                System.out.println("HashMap in in the end of the thread in readMessage size "+OtherUserStatus.size());
             }
         });
+        System.out.println("HashMap in the end of readMessage size "+OtherUserStatus.size());
         readThread.start();
     }
 

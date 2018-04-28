@@ -6,6 +6,9 @@
 package pewchatclient;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
+import static pewchatclient.MyClient.OtherUserStatus;
 
 /**
  *
@@ -24,6 +27,21 @@ public class ClientFrame extends javax.swing.JFrame {
         initComponents();
         
     }
+    public String getEncodedStatus(){
+        if(StatusComboBox.getSelectedItem()=="Online"){
+            return "###1";
+        }
+        else if(StatusComboBox.getSelectedItem()=="Busy"){
+            return "###2";
+        }
+        else if(StatusComboBox.getSelectedItem()=="Away"){
+            return "###3";
+        }
+        else if(StatusComboBox.getSelectedItem()=="Offline"){
+            return "###4";
+        }
+        else return "Error";
+   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -47,6 +65,11 @@ public class ClientFrame extends javax.swing.JFrame {
         SendBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         MsgTextArea = new javax.swing.JTextArea();
+        UserStatusLabel = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        UsersStatusArea = new javax.swing.JTextArea();
+        StatusLabel = new javax.swing.JLabel();
+        StatusComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -105,6 +128,21 @@ public class ClientFrame extends javax.swing.JFrame {
         MsgTextArea.setRows(5);
         jScrollPane2.setViewportView(MsgTextArea);
 
+        UserStatusLabel.setText("Users Status");
+
+        UsersStatusArea.setColumns(20);
+        UsersStatusArea.setRows(5);
+        jScrollPane3.setViewportView(UsersStatusArea);
+
+        StatusLabel.setText("status");
+
+        StatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Online", "Busy", "Away", "Offline" }));
+        StatusComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StatusComboBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -112,7 +150,7 @@ public class ClientFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(73, Short.MAX_VALUE)
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(UsernameLabel)
@@ -131,30 +169,50 @@ public class ClientFrame extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(PortNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(69, 69, 69)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
                             .addComponent(SendBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jScrollPane2))))
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(UserStatusLabel)
+                        .addGap(127, 127, 127))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(41, 41, 41)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(StatusLabel)
+                                .addGap(18, 18, 18)
+                                .addComponent(StatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(49, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(AddressLabel)
                     .addComponent(AddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(UsernameLabel)
                     .addComponent(UsernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(PortNumberLabel)
-                    .addComponent(PortNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
+                    .addComponent(PortNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(StatusLabel)
+                    .addComponent(StatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(DisconnectBtn)
-                    .addComponent(ConnectBtn))
+                    .addComponent(ConnectBtn)
+                    .addComponent(UserStatusLabel))
                 .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
@@ -182,12 +240,17 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_DisconnectBtnActionPerformed
 
     private void ConnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectBtnActionPerformed
+        ConnectBtn.disable();
+        System.out.println("HashMap in the beginning of Connect size "+OtherUserStatus.size());
         client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
         client.ReadMessage();
+        client.SendMessage(getEncodedStatus());
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
+                System.out.println();
                 while(true){
+                    System.out.println("Check ChatTextArea is running");
                     if(client.newMessage == true){
                         ChatTextArea.setText(client.Messages.toString());
                         client.newMessage = false;
@@ -196,12 +259,57 @@ public class ClientFrame extends javax.swing.JFrame {
             }
         });
         t.start();
+        System.out.println("HashMap in the end of Thread 1 size "+OtherUserStatus.size());
+        Thread t2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    System.out.println("Check USersStatusArea is running");
+                    if (client.UserStatusChanged == true) {
+                        //UsersStatusArea.setText("");
+                        System.out.println("Size of HashMap in Thread2 "+OtherUserStatus.size());
+                        Iterator it = MyClient.OtherUserStatus.entrySet().iterator();
+                        if(MyClient.OtherUserStatus.size()>1){
+                            System.out.println("Size of HashMap is "+MyClient.OtherUserStatus.size());
+                            
+                        }
+                            
+                        while (it.hasNext()) {
+                            Map.Entry pair = (Map.Entry) it.next();
+                            System.out.println("Value"+pair.getValue());
+                            UsersStatusArea.append(pair.getKey() + " is " + pair.getValue()+"\n");
+                            it.remove(); // avoids a ConcurrentModificationException
+                        }
+                        client.UserStatusChanged=false;
+                    }
+                }
+            }
+        });
+        t2.start();
+        System.out.println("Size of HashMap  after thread 2 is "+MyClient.OtherUserStatus.size());
+        
     }//GEN-LAST:event_ConnectBtnActionPerformed
 
     private void SendBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendBtnActionPerformed
         client.SendMessage(MsgTextArea.getText());
-        ChatTextArea.append("\n"+MsgTextArea.getText());        
+        ChatTextArea.append("\n"+MsgTextArea.getText());
+        MsgTextArea.setText("");//to clear the chat text area after sending
+        
     }//GEN-LAST:event_SendBtnActionPerformed
+
+    private void StatusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StatusComboBoxActionPerformed
+        try {
+            if (client.isConnected == true) {
+                client.status = (String) StatusComboBox.getSelectedItem();
+                client.UserStatusChanged=true;
+                client.SendMessage(getEncodedStatus());
+            } else {
+
+            }
+        } catch (Exception ex) {
+            System.out.println("Connected Not Pressed, client is still not instantiated");
+        }
+    }//GEN-LAST:event_StatusComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -248,9 +356,14 @@ public class ClientFrame extends javax.swing.JFrame {
     private javax.swing.JTextField PortNumTextField;
     private javax.swing.JLabel PortNumberLabel;
     private javax.swing.JButton SendBtn;
+    private javax.swing.JComboBox<String> StatusComboBox;
+    private javax.swing.JLabel StatusLabel;
+    private javax.swing.JLabel UserStatusLabel;
     private javax.swing.JLabel UsernameLabel;
     private javax.swing.JTextField UsernameTextField;
+    private javax.swing.JTextArea UsersStatusArea;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     // End of variables declaration//GEN-END:variables
 }
