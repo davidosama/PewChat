@@ -1,8 +1,8 @@
 send below string to set status as offline
-### 10
+### 4
 
 send below string to set status as online
-### 11
+### 1
 
 send below string to set status as away
 ### 2

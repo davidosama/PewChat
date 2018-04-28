@@ -6,6 +6,7 @@
 package pewchatclient;
 
 import java.io.IOException;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -15,8 +16,7 @@ public class ClientFrame extends javax.swing.JFrame {
     
     
     MyClient client ;
-    static String msgRecieved;
-
+    
     /**
      * Creates new form ClientFrame
      */
@@ -47,6 +47,11 @@ public class ClientFrame extends javax.swing.JFrame {
         SendBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         MsgTextArea = new javax.swing.JTextArea();
+        StatusComboBox = new javax.swing.JComboBox<>();
+        StatusLbl = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -105,6 +110,19 @@ public class ClientFrame extends javax.swing.JFrame {
         MsgTextArea.setRows(5);
         jScrollPane2.setViewportView(MsgTextArea);
 
+        StatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Online", "Away", "Busy", "Offline" }));
+        StatusComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StatusComboBoxActionPerformed(evt);
+            }
+        });
+
+        StatusLbl.setText("Status");
+
+        jScrollPane3.setViewportView(jList1);
+
+        jLabel2.setText("Users available");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -112,11 +130,11 @@ public class ClientFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(73, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGap(73, 73, 73)
+                        .addComponent(UsernameLabel)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(UsernameLabel)
-                                .addGap(18, 18, 18)
                                 .addComponent(UsernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(AddressLabel)
@@ -125,46 +143,77 @@ public class ClientFrame extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(PortNumberLabel))
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
                                 .addComponent(ConnectBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(72, 72, 72)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(DisconnectBtn)))
                         .addGap(18, 18, 18)
                         .addComponent(PortNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
+                        .addComponent(SendBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
-                            .addComponent(SendBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2))))
-                .addContainerGap(75, Short.MAX_VALUE))
+                        .addGap(26, 26, 26)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(StatusLbl)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(StatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(AddressLabel)
                     .addComponent(AddressTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(UsernameLabel)
                     .addComponent(UsernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(PortNumberLabel)
-                    .addComponent(PortNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
+                    .addComponent(PortNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(StatusLbl)
+                    .addComponent(StatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(DisconnectBtn)
-                    .addComponent(ConnectBtn))
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                    .addComponent(ConnectBtn)
+                    .addComponent(DisconnectBtn))
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(42, 42, 42)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addComponent(SendBtn)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private String getStatusEncoded(){
+        String s = (String)StatusComboBox.getSelectedItem();
+        if (s=="Online")
+            return "###1";
+        else if (s=="Away")
+            return "###2"; 
+        else if (s=="Busy")
+            return "###3";
+        else if (s=="Offline")
+            return "###4";
+        else return "ErrorInClientStatus";
+    }
+    
     private void UsernameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_UsernameTextFieldActionPerformed
@@ -182,14 +231,16 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_DisconnectBtnActionPerformed
 
     private void ConnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectBtnActionPerformed
-        client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
+        client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()),(String)StatusComboBox.getSelectedItem());
         client.ReadMessage();
+        //client.SendMessage(getStatusEncoded());
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 while(true){
 //                    System.out.println("Reading messages...");
-                    ChatTextArea.setText(client.Messages.toString());    
+                    //ChatTextArea.setText(client.Messages.toString());    
+                    ChatTextArea.append(client.Messages.toString());
                 }
             }
         });
@@ -197,9 +248,24 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_ConnectBtnActionPerformed
 
     private void SendBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendBtnActionPerformed
-        client.SendMessage(MsgTextArea.getText());
+        client.SendMessage("Sasdas"+MsgTextArea.getText());
         ChatTextArea.append("\n"+MsgTextArea.getText());        
     }//GEN-LAST:event_SendBtnActionPerformed
+
+    //This functions is called when the status is changed by the client
+    //if client is connected--> Send Status to Server
+    //if not Connected ---> Catch Exception
+    private void StatusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StatusComboBoxActionPerformed
+        System.out.println("Status is changed to " + (String) StatusComboBox.getSelectedItem());
+        try {
+            if (client.isConnected) {
+                client.SendMessage(getStatusEncoded());
+            }
+        } catch (Exception ex) {
+            System.out.println("Exception! Not Connected yet, Please Connect First");
+        }
+
+    }//GEN-LAST:event_StatusComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -246,9 +312,14 @@ public class ClientFrame extends javax.swing.JFrame {
     private javax.swing.JTextField PortNumTextField;
     private javax.swing.JLabel PortNumberLabel;
     private javax.swing.JButton SendBtn;
+    private javax.swing.JComboBox<String> StatusComboBox;
+    private javax.swing.JLabel StatusLbl;
     private javax.swing.JLabel UsernameLabel;
     private javax.swing.JTextField UsernameTextField;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JList<String> jList1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     // End of variables declaration//GEN-END:variables
 }

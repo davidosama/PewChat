@@ -22,17 +22,24 @@ public class MyClient {
     Scanner scn = new Scanner(System.in);
     Thread readThread;
     StringBuffer Messages = new StringBuffer();
+    //String Messages="";
+    String status="";
+    Boolean isConnected=false;
 
-    public MyClient(String address, int port) {
+    public MyClient(String address, int port, String status) {
         // establish a connection
         try {
-            System.out.println("Connected");
             socket = new Socket(address, port);
+            System.out.println("Connected");
+            
             // takes input from terminal
             input = new DataInputStream(socket.getInputStream());
 
             // sends output to the socket
             out = new DataOutputStream(socket.getOutputStream());
+            this.status=status;
+            System.out.println("Client Status is "+status);
+            isConnected = true;
 
         } catch (UnknownHostException u) {
             System.out.println(u);
@@ -43,21 +50,15 @@ public class MyClient {
     }
 
     void ReadMessage() {
-        System.out.println("ReadMessage called.");
         readThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("ReadMessage thread called.");
                 try {
                     while (true) {
-                        System.out.println("ReadMessage while called.");
-
                         // read the message sent to this client
                         String msg = input.readUTF();
-                        System.out.println("Message received: " + msg);
                         Messages.append("\n").append(msg);
-                        System.out.println("Messages STRING: " + Messages);
-
+                        //Messages=msg;
                     }
                 } catch (IOException e) {
                     System.out.println("IO Exception");

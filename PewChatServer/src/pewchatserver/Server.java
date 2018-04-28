@@ -65,4 +65,9 @@ public class Server implements Runnable {
  
         }
     }
+    
+    static public String checkSequence(String s, String Sequence){
+        
+        return "";
+    }
 }
