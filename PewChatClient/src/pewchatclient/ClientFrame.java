@@ -6,15 +6,17 @@
 package pewchatclient;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author minarafla
  */
 public class ClientFrame extends javax.swing.JFrame {
-    
-    
-    MyClient client ;
+
+    public static Thread chatTextAreaThread;
+    MyClient client;
     static String msgRecieved;
 
     /**
@@ -22,7 +24,7 @@ public class ClientFrame extends javax.swing.JFrame {
      */
     public ClientFrame() {
         initComponents();
-        
+
     }
 
     /**
@@ -182,25 +184,35 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_DisconnectBtnActionPerformed
 
     private void ConnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectBtnActionPerformed
-        client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
-        client.ReadMessage();
-        Thread t = new Thread(new Runnable() {
+        client = new MyClient(AddressTextField.getText(), Integer.parseInt(PortNumTextField.getText()));
+        chatTextAreaThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(true){
-                    if(client.newMessage == true){
-                        ChatTextArea.setText(client.Messages.toString());
-                        client.newMessage = false;
-                    }  
+                while (true) {
+//                    System.out.println("Chat text area thread is running");
+                    synchronized (chatTextAreaThread) {
+                        if (client.newMessage == true) {
+                            ChatTextArea.setText(client.Messages.toString());
+                            client.newMessage = false;
+                            try {
+
+                                chatTextAreaThread.wait();
+                            } catch (InterruptedException ex) {
+
+                            }
+                        }
+                    }
                 }
             }
         });
-        t.start();
+        chatTextAreaThread.start();
+        client.ReadMessage();
+
     }//GEN-LAST:event_ConnectBtnActionPerformed
 
     private void SendBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendBtnActionPerformed
         client.SendMessage(MsgTextArea.getText());
-        ChatTextArea.append("\n"+MsgTextArea.getText());        
+        ChatTextArea.append("\n" + MsgTextArea.getText());
     }//GEN-LAST:event_SendBtnActionPerformed
 
     /**

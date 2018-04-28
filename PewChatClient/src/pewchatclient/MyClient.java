@@ -51,14 +51,17 @@ public class MyClient {
                 System.out.println("ReadMessage thread called.");
                 try {
                     while (true) {
-                        System.out.println("ReadMessage while called.");
+                        synchronized (ClientFrame.chatTextAreaThread) {
+                            System.out.println("ReadMessage while called.");
 
-                        // read the message sent to this client
-                        String msg = input.readUTF();
-                        System.out.println("Message received: " + msg);
-                        Messages.append("\n").append(msg);
-                        newMessage = true;
-                        System.out.println("Messages STRING: " + Messages);
+                            // read the message sent to this client
+                            String msg = input.readUTF();
+                            System.out.println("Message received: " + msg);
+                            Messages.append("\n").append(msg);
+                            newMessage = true;
+                            ClientFrame.chatTextAreaThread.notify();
+                            System.out.println("Messages STRING: " + Messages);
+                        }
 
                     }
                 } catch (IOException e) {
