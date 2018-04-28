@@ -188,8 +188,10 @@ public class ClientFrame extends javax.swing.JFrame {
             @Override
             public void run() {
                 while(true){
-//                    System.out.println("Reading messages...");
-                    ChatTextArea.setText(client.Messages.toString());    
+                    if(client.newMessage == true){
+                        ChatTextArea.setText(client.Messages.toString());
+                        client.newMessage = false;
+                    }  
                 }
             }
         });

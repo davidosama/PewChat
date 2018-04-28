@@ -22,6 +22,7 @@ public class MyClient {
     Scanner scn = new Scanner(System.in);
     Thread readThread;
     StringBuffer Messages = new StringBuffer();
+    boolean newMessage = false;
 
     public MyClient(String address, int port) {
         // establish a connection
@@ -56,6 +57,7 @@ public class MyClient {
                         String msg = input.readUTF();
                         System.out.println("Message received: " + msg);
                         Messages.append("\n").append(msg);
+                        newMessage = true;
                         System.out.println("Messages STRING: " + Messages);
 
                     }
