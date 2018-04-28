@@ -22,11 +22,10 @@ public class MyClient {
     Scanner scn = new Scanner(System.in);
     Thread readThread;
     StringBuffer Messages = new StringBuffer();
+    //String Messages="";
     String status="";
     Boolean isConnected=false;
-    ArrayList <String>OtherUsers;
-    
-    
+
     public MyClient(String address, int port, String status) {
         // establish a connection
         try {
@@ -41,7 +40,6 @@ public class MyClient {
             this.status=status;
             System.out.println("Client Status is "+status);
             isConnected = true;
-            OtherUsers=new <String>ArrayList();
 
         } catch (UnknownHostException u) {
             System.out.println(u);
@@ -59,14 +57,8 @@ public class MyClient {
                     while (true) {
                         // read the message sent to this client
                         String msg = input.readUTF();
-                        if (msg.contains("###")) {
-                            OtherUsers.add(msg);
-                        } else {
-                            Messages.append("\n");
-                            Messages.append(msg);
-                            System.out.println("Messages is " + Messages);
-                        }
-
+                        Messages.append("\n").append(msg);
+                        //Messages=msg;
                     }
                 } catch (IOException e) {
                     System.out.println("IO Exception");

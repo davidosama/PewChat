@@ -30,6 +30,7 @@ public class User implements Runnable {
                 // receive the string
                 recieved = inputStream.readUTF();
                 
+                
                 System.out.println(recieved);
                 if (recieved.equals("logout")) {
                     this.isOnline = false;
@@ -42,7 +43,7 @@ public class User implements Runnable {
 //                String MsgToSend = st.nextToken();
 //                String recipient = st.nextToken();
                 System.out.println(name + " is sending: " + recieved);
-                
+
                 for (int i = 0; i < PewChatServer.users.size(); i++) {
                     PewChatServer.users.get(i).outputStream.writeUTF(name + " : " + recieved);
                 }
