@@ -8,6 +8,8 @@ package pewchatclient;
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -116,6 +118,16 @@ public class MyClient {
             e.printStackTrace();
         }
 
+    }
+    
+    void closeConnection(){
+        try {
+            this.out.close();
+            this.input.close();
+            this.socket.close();
+        } catch (IOException ex) {
+        
+        }
     }
 
 }

@@ -8,6 +8,8 @@ package pewchatclient;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static pewchatclient.MyClient.OtherUserStatus;
 
 /**
@@ -72,33 +74,21 @@ public class ClientFrame extends javax.swing.JFrame {
         StatusComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("PewChat");
         setResizable(false);
 
         PortNumberLabel.setText("Port #");
 
-        UsernameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                UsernameTextFieldActionPerformed(evt);
-            }
-        });
-
         UsernameLabel.setText("Username");
 
-        PortNumTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PortNumTextFieldActionPerformed(evt);
-            }
-        });
+        PortNumTextField.setText("9999");
 
         AddressLabel.setText("Address");
 
-        AddressTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AddressTextFieldActionPerformed(evt);
-            }
-        });
+        AddressTextField.setText("localhost");
 
         DisconnectBtn.setText("Disconnect");
+        DisconnectBtn.setEnabled(false);
         DisconnectBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DisconnectBtnActionPerformed(evt);
@@ -148,9 +138,9 @@ public class ClientFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(69, 69, 69)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(UsernameLabel)
@@ -168,12 +158,10 @@ public class ClientFrame extends javax.swing.JFrame {
                                 .addComponent(DisconnectBtn)))
                         .addGap(18, 18, 18)
                         .addComponent(PortNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
-                            .addComponent(SendBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2))))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
+                        .addComponent(SendBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -223,26 +211,17 @@ public class ClientFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void UsernameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_UsernameTextFieldActionPerformed
-
-    private void PortNumTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PortNumTextFieldActionPerformed
-
-    }//GEN-LAST:event_PortNumTextFieldActionPerformed
-
-    private void AddressTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddressTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_AddressTextFieldActionPerformed
-
     private void DisconnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DisconnectBtnActionPerformed
-        // TODO add your handling code here:
+        client.closeConnection();
+        DisconnectBtn.setEnabled(false);
+        ConnectBtn.setEnabled(true);
     }//GEN-LAST:event_DisconnectBtnActionPerformed
 
     private void ConnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectBtnActionPerformed
-        ConnectBtn.disable();
         System.out.println("HashMap in the beginning of Connect size "+OtherUserStatus.size());
         client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
+        DisconnectBtn.setEnabled(true);
+        ConnectBtn.setEnabled(false);
         client.ReadMessage();
         client.SendMessage(getEncodedStatus());
         Thread t = new Thread(new Runnable() {
@@ -287,7 +266,6 @@ public class ClientFrame extends javax.swing.JFrame {
         });
         t2.start();
         System.out.println("Size of HashMap  after thread 2 is "+MyClient.OtherUserStatus.size());
-        
     }//GEN-LAST:event_ConnectBtnActionPerformed
 
     private void SendBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendBtnActionPerformed

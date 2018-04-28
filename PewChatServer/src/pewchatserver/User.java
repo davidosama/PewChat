@@ -50,8 +50,7 @@ public class User implements Runnable {
                         PewChatServer.users.get(i).outputStream.writeUTF(name+" : "+recieved);
                     }
             } catch (IOException e) {
-                 
-                e.printStackTrace();
+                
             }
              
         }
@@ -62,7 +61,7 @@ public class User implements Runnable {
             this.outputStream.close();
              
         }catch(IOException e){
-            e.printStackTrace();
+            
         }
     }
     
