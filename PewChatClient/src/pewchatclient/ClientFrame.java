@@ -77,6 +77,7 @@ public class ClientFrame extends javax.swing.JFrame {
         GroupsLabel = new javax.swing.JLabel();
         JoinBtn = new javax.swing.JButton();
         LeaveBtn = new javax.swing.JButton();
+        CreateGroupBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PewChat");
@@ -151,6 +152,8 @@ public class ClientFrame extends javax.swing.JFrame {
 
         LeaveBtn.setText("Leave");
 
+        CreateGroupBtn.setText("Create Group");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -190,7 +193,10 @@ public class ClientFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(GroupsLabel)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(GroupsLabel)
+                                .addGap(18, 18, 18)
+                                .addComponent(CreateGroupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(UserStatusLabel)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -232,7 +238,9 @@ public class ClientFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(GroupsLabel)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(GroupsLabel)
+                            .addComponent(CreateGroupBtn))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane4)))
                 .addGap(29, 29, 29)
@@ -364,6 +372,7 @@ public class ClientFrame extends javax.swing.JFrame {
     private javax.swing.JTextField AddressTextField;
     private javax.swing.JTextArea ChatTextArea;
     private javax.swing.JButton ConnectBtn;
+    private javax.swing.JButton CreateGroupBtn;
     private javax.swing.JButton DisconnectBtn;
     private javax.swing.JLabel GroupsLabel;
     private javax.swing.JList<String> GroupsjList;

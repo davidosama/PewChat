@@ -67,7 +67,11 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="GroupsLabel" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="GroupsLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="CreateGroupBtn" min="-2" pref="113" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="UserStatusLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
@@ -122,7 +126,10 @@
                   <Group type="102" attributes="0">
                       <Component id="jScrollPane3" min="-2" pref="161" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="GroupsLabel" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="GroupsLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="CreateGroupBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jScrollPane4" max="32767" attributes="0"/>
                   </Group>
@@ -303,6 +310,11 @@
     <Component class="javax.swing.JButton" name="LeaveBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Leave"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="CreateGroupBtn">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Create Group"/>
       </Properties>
     </Component>
   </SubComponents>
