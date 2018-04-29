@@ -11,7 +11,10 @@ send below string to set status as busy
 ### 3
 
 send below string after server connection to tell the server your name is david
-### david
+### myname david
+
+send below string after server connection to tell the server your status is online
+### mystatus online
 
 send below string to tell the server create new group named Pew and join it
 ### creategroup Pew
@@ -21,3 +24,7 @@ send below string to tell the server to join group named Pew
 
 send below string to tell the server to leave group named Pew
 ### leavegroup Pew
+
+send below string to tell the server to chat P2P with my address, port to mina
+### p2p 192.168.1.110 9000 mina
+

@@ -114,6 +114,7 @@ public class ClientFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(ChatTextArea);
 
         SendBtn.setText("Send Message");
+        SendBtn.setEnabled(false);
         SendBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SendBtnActionPerformed(evt);
@@ -133,26 +134,25 @@ public class ClientFrame extends javax.swing.JFrame {
         StatusLabel.setText("status");
 
         StatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Online", "Busy", "Away", "Offline" }));
+        StatusComboBox.setEnabled(false);
         StatusComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 StatusComboBoxActionPerformed(evt);
             }
         });
 
-        GroupsjList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane4.setViewportView(GroupsjList);
 
         GroupsLabel.setText("Groups");
 
         JoinBtn.setText("Join");
+        JoinBtn.setEnabled(false);
 
         LeaveBtn.setText("Leave");
+        LeaveBtn.setEnabled(false);
 
         CreateGroupBtn.setText("Create Group");
+        CreateGroupBtn.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -192,19 +192,18 @@ public class ClientFrame extends javax.swing.JFrame {
                         .addContainerGap(174, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(GroupsLabel)
                                 .addGap(18, 18, 18)
                                 .addComponent(CreateGroupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(UserStatusLabel)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(JoinBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(LeaveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.LEADING)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(JoinBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(LeaveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3))
                         .addGap(0, 51, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -263,8 +262,12 @@ public class ClientFrame extends javax.swing.JFrame {
     private void ConnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectBtnActionPerformed
         System.out.println("HashMap in the beginning of Connect size "+OtherUserStatus.size());
         client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
+        client.SendMessage("### myname "+UsernameTextField.getText());
         DisconnectBtn.setEnabled(true);
         ConnectBtn.setEnabled(false);
+        SendBtn.setEnabled(true);
+        CreateGroupBtn.setEnabled(true);
+        StatusComboBox.setEnabled(true);
         client.ReadMessage();
         client.SendMessage(getEncodedStatus());
         Thread t = new Thread(new Runnable() {
