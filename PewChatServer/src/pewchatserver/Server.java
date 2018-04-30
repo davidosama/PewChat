@@ -2,9 +2,6 @@ package pewchatserver;
 
 import java.io.*;
 import java.net.*;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Server implements Runnable {
 
@@ -60,7 +57,7 @@ public class Server implements Runnable {
                      System.out.println(PewChatServer.users.get(i).name+" is connected");
                  }
              } catch (IOException ex) {
-                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+             
              }
  
         }

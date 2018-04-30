@@ -32,11 +32,11 @@ public class User implements Runnable {
                 System.out.println(name + " sent: " + recieved);
                 if (!isServerMessage(recieved)) {
                     for (int i = 0; i < PewChatServer.users.size(); i++) {
-                        PewChatServer.users.get(i).outputStream.writeUTF(name + " : " + recieved);
+                        PewChatServer.users.get(i).outputStream.writeUTF(name + ": " + recieved);
                     }
                 }
                 HandleServerMessage(recieved);
-                
+
                 if (recieved.equals("logout")) {
                     this.isOnline = false;
                     this.socket.close();
@@ -60,7 +60,7 @@ public class User implements Runnable {
 
     public boolean isServerMessage(String message) {
         StringTokenizer tokens = new StringTokenizer(message, " ");
-        if (tokens.nextToken().equals("###")){
+        if (tokens.nextToken().equals("###")) {
             return true;
         }
         return false;
@@ -68,13 +68,11 @@ public class User implements Runnable {
 
     public void HandleServerMessage(String message) {
         StringTokenizer tokens = new StringTokenizer(message, " ");
-        if (tokens.nextToken().equals("###")){
+        if (tokens.nextToken().equals("###")) {
             String currentToken = tokens.nextToken();
-            System.out.println("current token: "+currentToken);
-            switch(currentToken){
+            switch (currentToken) {
                 case "myname":
                     this.name = tokens.nextToken();
-                    System.out.println(this.name+" sent his name");
                     broadcastStatus();
                     break;
                 case "mystatus":
@@ -98,22 +96,36 @@ public class User implements Runnable {
     }
 
     public void createGroup(String groupName) {
-    
+
     }
 
     public void joinGroup(String groupName) {
-    
+
     }
 
     public void leaveGroup(String groupName) {
-    
+
     }
 
     public void createP2Pchat(String p2pConnectionDetails) {
-    
+
     }
 
     public void broadcastStatus() {
-    
+        StringBuffer message = new StringBuffer("### statusbroadcast\n");
+        
+        for(User user : PewChatServer.users){
+            message.append(message + user.name + " "+ user.status + " \n");
+        }
+        
+        for(User user : PewChatServer.users){
+            try {
+                user.outputStream.writeUTF(message.toString());
+            } catch (IOException ex) {
+            
+            }
+        }
     }
+
 }
+

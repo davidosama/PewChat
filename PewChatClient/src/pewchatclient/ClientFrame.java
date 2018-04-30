@@ -1,21 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pewchatclient;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import static pewchatclient.MyClient.OtherUserStatus;
-
-/**
- *
- * @author minarafla
- */
 public class ClientFrame extends javax.swing.JFrame {
     
     
@@ -31,16 +15,16 @@ public class ClientFrame extends javax.swing.JFrame {
     }
     public String getEncodedStatus(){
         if(StatusComboBox.getSelectedItem()=="Online"){
-            return "###1";
+            return "### mystatus Online";
         }
         else if(StatusComboBox.getSelectedItem()=="Busy"){
-            return "###2";
+            return "### mystatus Busy";
         }
         else if(StatusComboBox.getSelectedItem()=="Away"){
-            return "###3";
+            return "### mystatus Away";
         }
         else if(StatusComboBox.getSelectedItem()=="Offline"){
-            return "###4";
+            return "### mystatus Offline";
         }
         else return "Error";
    }
@@ -68,8 +52,6 @@ public class ClientFrame extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         MsgTextArea = new javax.swing.JTextArea();
         UserStatusLabel = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        UsersStatusArea = new javax.swing.JTextArea();
         StatusLabel = new javax.swing.JLabel();
         StatusComboBox = new javax.swing.JComboBox<>();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -78,6 +60,8 @@ public class ClientFrame extends javax.swing.JFrame {
         JoinBtn = new javax.swing.JButton();
         LeaveBtn = new javax.swing.JButton();
         CreateGroupBtn = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        UsersjList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PewChat");
@@ -127,10 +111,6 @@ public class ClientFrame extends javax.swing.JFrame {
 
         UserStatusLabel.setText("Users Status");
 
-        UsersStatusArea.setColumns(20);
-        UsersStatusArea.setRows(5);
-        jScrollPane3.setViewportView(UsersStatusArea);
-
         StatusLabel.setText("status");
 
         StatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Online", "Busy", "Away", "Offline" }));
@@ -153,6 +133,13 @@ public class ClientFrame extends javax.swing.JFrame {
 
         CreateGroupBtn.setText("Create Group");
         CreateGroupBtn.setEnabled(false);
+
+        UsersjList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "1" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane5.setViewportView(UsersjList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -200,10 +187,10 @@ public class ClientFrame extends javax.swing.JFrame {
                             .addComponent(UserStatusLabel)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(JoinBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                                 .addComponent(LeaveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jScrollPane3))
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                         .addGap(0, 51, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -235,8 +222,8 @@ public class ClientFrame extends javax.swing.JFrame {
                         .addGap(30, 30, 30)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane5)
+                        .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(GroupsLabel)
                             .addComponent(CreateGroupBtn))
@@ -260,7 +247,7 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_DisconnectBtnActionPerformed
 
     private void ConnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectBtnActionPerformed
-        System.out.println("HashMap in the beginning of Connect size "+OtherUserStatus.size());
+        System.out.println("HashMap in the beginning of Connect size "+ client.OtherUserStatus.size());
         client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
         client.SendMessage("### myname "+UsernameTextField.getText());
         DisconnectBtn.setEnabled(true);
@@ -284,26 +271,17 @@ public class ClientFrame extends javax.swing.JFrame {
             }
         });
         t.start();
-        System.out.println("HashMap in the end of Thread 1 size "+OtherUserStatus.size());
+        
         Thread t2 = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
-                    System.out.println("Check USersStatusArea is running");
+                    System.out.println("Check UsersStatusArea is running");
                     if (client.UserStatusChanged == true) {
-                        //UsersStatusArea.setText("");
-                        System.out.println("Size of HashMap in Thread2 "+OtherUserStatus.size());
-                        Iterator it = MyClient.OtherUserStatus.entrySet().iterator();
-                        if(MyClient.OtherUserStatus.size()>1){
-                            System.out.println("Size of HashMap is "+MyClient.OtherUserStatus.size());
-                            
-                        }
-                            
-                        while (it.hasNext()) {
-                            Map.Entry pair = (Map.Entry) it.next();
-                            System.out.println("Value"+pair.getValue());
-                            UsersStatusArea.append(pair.getKey() + " is " + pair.getValue()+"\n");
-                            it.remove(); // avoids a ConcurrentModificationException
+                        for ( int i = 0; i < client.OtherUserStatus.size(); i++){
+                            User user = client.OtherUserStatus.get(i);
+                            //show all users with their statuses in the JList
+//                            UsersjList.add(i, user.name+" - "+user.status);
                         }
                         client.UserStatusChanged=false;
                     }
@@ -311,7 +289,6 @@ public class ClientFrame extends javax.swing.JFrame {
             }
         });
         t2.start();
-        System.out.println("Size of HashMap  after thread 2 is "+MyClient.OtherUserStatus.size());
     }//GEN-LAST:event_ConnectBtnActionPerformed
 
     private void SendBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendBtnActionPerformed
@@ -390,10 +367,10 @@ public class ClientFrame extends javax.swing.JFrame {
     private javax.swing.JLabel UserStatusLabel;
     private javax.swing.JLabel UsernameLabel;
     private javax.swing.JTextField UsernameTextField;
-    private javax.swing.JTextArea UsersStatusArea;
+    private javax.swing.JList<String> UsersjList;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     // End of variables declaration//GEN-END:variables
 }
