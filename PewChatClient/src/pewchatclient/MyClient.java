@@ -30,6 +30,14 @@ public class MyClient {
     static Map<String,String> OtherUserStatus = new HashMap<String,String>();
     boolean UserStatusChanged=false;
 
+    public DataInputStream getInput() {
+        return input;
+    }
+
+    public DataOutputStream getOut() {
+        return out;
+    }
+
     public MyClient(String address, int port) {
         // establish a connection
         try {
