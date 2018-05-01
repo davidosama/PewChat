@@ -16,7 +16,7 @@ public class MyClient {
     boolean newMessage = false;
     String status = "";
     Boolean isConnected = false;
-    ArrayList <User> OtherUserStatus = new ArrayList<User>();
+    ArrayList<User> OtherUserStatus = new ArrayList<User>();
     boolean UserStatusChanged = false;
     boolean GroupListChanged=false;
 
@@ -60,12 +60,17 @@ public class MyClient {
 
                         // read the message sent to this client
                         String msg = input.readUTF();
-
-                        if (msg.matches("^###")) {
+                        StringTokenizer tokens = new StringTokenizer(msg, " ");
+                        if (tokens.nextToken().equals("###")) {
                             System.out.println("Server message received: " + msg);
-                            if (msg.matches("^### statusbroadcast")) {
-                                updateUsersStatuses(msg);
+                            String peertopeer = tokens.nextToken();
+                            if (peertopeer.equals("p2p")) {
+                                String IP = tokens.nextToken();
+                                String PortNum = tokens.nextToken();
+                                String UserName = tokens.nextToken();
+                                PeerNode PN = new PeerNode(UserName, IP, PortNum);
                             }
+
                         } else {
                             System.out.println("Message received: " + msg);
                             Messages.append("\n").append(msg);
@@ -104,7 +109,7 @@ public class MyClient {
             String userStatus = tokens.nextToken();
             //check if last \n is a token
             System.out.println("user: " + userName + " - status: " + userStatus);
-            
+
             OtherUserStatus.add(new User(userName, userStatus));
         }
         UserStatusChanged = true;
