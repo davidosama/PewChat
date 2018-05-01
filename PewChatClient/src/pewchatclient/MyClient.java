@@ -19,6 +19,14 @@ public class MyClient {
     ArrayList <User> OtherUserStatus = new ArrayList<User>();
     boolean UserStatusChanged = false;
 
+    public DataInputStream getInput() {
+        return input;
+    }
+
+    public DataOutputStream getOut() {
+        return out;
+    }
+
     public MyClient(String address, int port) {
         // establish a connection
         try {
