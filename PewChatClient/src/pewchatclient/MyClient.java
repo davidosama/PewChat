@@ -18,7 +18,6 @@ public class MyClient {
     Boolean isConnected = false;
     ArrayList <User> OtherUserStatus = new ArrayList<User>();
     boolean UserStatusChanged = false;
-    boolean GroupListChanged=false;
 
     public DataInputStream getInput() {
         return input;

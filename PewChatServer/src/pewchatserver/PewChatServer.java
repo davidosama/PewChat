@@ -9,7 +9,6 @@ public class PewChatServer {
      * @param args the command line arguments
      */
     static ArrayList<User> users = new ArrayList<User>();
-    static ArrayList<Group> groups = new ArrayList<Group>();
     
     public static void main(String[] args) throws IOException {
         Server server = new Server("localhost", 9999);

@@ -1,15 +1,10 @@
 package pewchatclient;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JOptionPane;
-
 public class ClientFrame extends javax.swing.JFrame {
     
     
     MyClient client ;
     static String msgRecieved;
-    DefaultListModel<String> GroupsListModel = new DefaultListModel<>();
-    
 
     /**
      * Creates new form ClientFrame
@@ -138,11 +133,6 @@ public class ClientFrame extends javax.swing.JFrame {
 
         CreateGroupBtn.setText("Create Group");
         CreateGroupBtn.setEnabled(false);
-        CreateGroupBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CreateGroupBtnActionPerformed(evt);
-            }
-        });
 
         UsersjList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "1" };
@@ -257,7 +247,7 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_DisconnectBtnActionPerformed
 
     private void ConnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectBtnActionPerformed
-        //System.out.println("HashMap in the beginning of Connect size "+ client.OtherUserStatus.size());
+        System.out.println("HashMap in the beginning of Connect size "+ client.OtherUserStatus.size());
         client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
         client.SendMessage("### myname "+UsernameTextField.getText());
         DisconnectBtn.setEnabled(true);
@@ -321,11 +311,6 @@ public class ClientFrame extends javax.swing.JFrame {
             System.out.println("Connected Not Pressed, client is still not instantiated");
         }
     }//GEN-LAST:event_StatusComboBoxActionPerformed
-
-    private void CreateGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateGroupBtnActionPerformed
-        String GroupName = JOptionPane.showInputDialog(this, "Enter Group Name");
-        client.SendMessage("### creategroup "+GroupName);
-    }//GEN-LAST:event_CreateGroupBtnActionPerformed
 
     /**
      * @param args the command line arguments

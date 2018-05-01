@@ -35,9 +35,7 @@ public class User implements Runnable {
                         PewChatServer.users.get(i).outputStream.writeUTF(name + ": " + recieved);
                     }
                 }
-                else{
                 HandleServerMessage(recieved);
-                }
 
                 if (recieved.equals("logout")) {
                     this.isOnline = false;
@@ -98,8 +96,7 @@ public class User implements Runnable {
     }
 
     public void createGroup(String groupName) {
-        Group g = new Group(groupName,this);
-        PewChatServer.groups.add(g);
+
     }
 
     public void joinGroup(String groupName) {
