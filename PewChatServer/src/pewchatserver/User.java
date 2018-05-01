@@ -111,37 +111,24 @@ public class User implements Runnable {
     }
 
     public void createP2Pchat(String p2pConnectionDetails) {
-        StringTokenizer tokens = new StringTokenizer(p2pConnectionDetails, " ");
-        StringBuffer msgToClient = new StringBuffer(tokens.nextToken() + " "
-                + tokens.nextToken() + " " + tokens.nextToken() + " "
-                + tokens.nextToken() + " " + this.name);
-        String receiver = tokens.nextToken();
-        for (User user : PewChatServer.users) {
-            if(receiver.equals(user.name)){
-            try {
-                user.outputStream.writeUTF(msgToClient.toString());
-            } catch (IOException ex) {
 
-            }            
-            }
-
-        }
     }
 
     public void broadcastStatus() {
         StringBuffer message = new StringBuffer("### statusbroadcast\n");
-
-        for (User user : PewChatServer.users) {
-            message.append(message + user.name + " " + user.status + " \n");
+        
+        for(User user : PewChatServer.users){
+            message.append(message + user.name + " "+ user.status + " \n");
         }
-
-        for (User user : PewChatServer.users) {
+        
+        for(User user : PewChatServer.users){
             try {
                 user.outputStream.writeUTF(message.toString());
             } catch (IOException ex) {
-
+            
             }
         }
     }
 
 }
+
