@@ -17,7 +17,7 @@ public class Group {
     StringBuffer Messages;
     ArrayList<User> Participants;
     User Admin;
-    static ArrayList<String> AllGroupsNames;
+    static StringBuffer AllGroupsNames=new StringBuffer();
     
     public Group(String GroupName, User Admin){
         
@@ -25,7 +25,7 @@ public class Group {
         Participants=new ArrayList<User>();
         Messages = new StringBuffer();
         this.Admin=Admin;
-        AllGroupsNames.add(GroupName);
+        AllGroupsNames.append(" "+GroupName);
         
    }
     
