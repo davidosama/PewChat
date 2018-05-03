@@ -286,12 +286,18 @@
         <Property name="text" type="java.lang.String" value="Join"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JoinBtnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="LeaveBtn">
       <Properties>
         <Property name="text" type="java.lang.String" value="Leave"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="LeaveBtnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="CreateGroupBtn">
       <Properties>

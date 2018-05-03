@@ -34,9 +34,8 @@ public class User implements Runnable {
                     for (int i = 0; i < PewChatServer.users.size(); i++) {
                         PewChatServer.users.get(i).outputStream.writeUTF(name + ": " + recieved);
                     }
-                }
-                else{
-                HandleServerMessage(recieved);
+                } else {
+                    HandleServerMessage(recieved);
                 }
 
                 if (recieved.equals("logout")) {
@@ -101,15 +100,25 @@ public class User implements Runnable {
         Group g = new Group(groupName, this);
         PewChatServer.groups.add(g);
         broadcastGroupNames();
-        
+
     }
 
     public void joinGroup(String groupName) {
+        for (int i = 0; i < PewChatServer.groups.size(); i++) {
+            if (PewChatServer.groups.get(i).GroupName.toString().equalsIgnoreCase(groupName)) {
+                PewChatServer.groups.get(i).addParticipant(this);
+            }
+        }
 
     }
 
     public void leaveGroup(String groupName) {
 
+        for (int i = 0; i < PewChatServer.groups.size(); i++) {
+            if (PewChatServer.groups.get(i).GroupName.toString().equalsIgnoreCase(groupName)) {
+                PewChatServer.groups.get(i).removeParticipant(this);
+            }
+        }
     }
 
     public void createP2Pchat(String p2pConnectionDetails) {
@@ -119,12 +128,12 @@ public class User implements Runnable {
                 + tokens.nextToken() + " " + this.name);
         String receiver = tokens.nextToken();
         for (User user : PewChatServer.users) {
-            if(receiver.equals(user.name)){
-            try {
-                user.outputStream.writeUTF(msgToClient.toString());
-            } catch (IOException ex) {
+            if (receiver.equals(user.name)) {
+                try {
+                    user.outputStream.writeUTF(msgToClient.toString());
+                } catch (IOException ex) {
 
-            }            
+                }
             }
 
         }
@@ -145,7 +154,7 @@ public class User implements Runnable {
             }
         }
     }
-    
+
     public void broadcastGroupNames() {
         StringBuffer groupnames = new StringBuffer("### groupnamesbroadcast ");
         groupnames.append(Group.AllGroupsNames);

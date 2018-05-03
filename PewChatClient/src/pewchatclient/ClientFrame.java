@@ -131,9 +131,19 @@ public class ClientFrame extends javax.swing.JFrame {
 
         JoinBtn.setText("Join");
         JoinBtn.setEnabled(false);
+        JoinBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JoinBtnActionPerformed(evt);
+            }
+        });
 
         LeaveBtn.setText("Leave");
         LeaveBtn.setEnabled(false);
+        LeaveBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LeaveBtnActionPerformed(evt);
+            }
+        });
 
         CreateGroupBtn.setText("Create Group");
         CreateGroupBtn.setEnabled(false);
@@ -348,6 +358,18 @@ public class ClientFrame extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_CreateGroupBtnActionPerformed
+
+    private void JoinBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JoinBtnActionPerformed
+        // TODO add your handling code here:
+        String GroupName=GroupsjList.getSelectedValue().toString();
+        client.SendMessage("### joingroup "+GroupName);
+    }//GEN-LAST:event_JoinBtnActionPerformed
+
+    private void LeaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LeaveBtnActionPerformed
+        // TODO add your handling code here:
+        String GroupName=GroupsjList.getSelectedValue().toString();
+        client.SendMessage("### leavegroup "+GroupName);
+    }//GEN-LAST:event_LeaveBtnActionPerformed
 
     /**
      * @param args the command line arguments

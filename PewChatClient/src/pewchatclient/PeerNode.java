@@ -61,6 +61,7 @@ public class PeerNode implements Runnable {
     }
 
     void sendInfo() {
+        
         String InfoMessage = "### p2p " + this.IPaddress + " " + this.portNum + " " + this.UserName;
         PewChatClient.frame.client.SendMessage(InfoMessage);
     }
