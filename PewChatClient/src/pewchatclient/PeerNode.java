@@ -26,14 +26,18 @@ public class PeerNode implements Runnable {
     private DataOutputStream output;
 
     //PeerNode acting as a Server constructor
-    void PeerNode(String UserName) {
+    PeerNode(String UserName) {
         this.UserName = UserName;
         this.MessageHistory = new StringBuffer();
 
         try {
-            serverSocket = new ServerSocket(0);
+            serverSocket = new ServerSocket(9999);
+            
             this.portNum = serverSocket.getLocalPort();
             this.IPaddress = serverSocket.getInetAddress().toString();
+            System.out.print("portNum: "+this.portNum);
+            System.out.print("IP: "+this.IPaddress);
+            System.out.print("name: "+this.UserName);
             sendInfo();
             socket = serverSocket.accept();
             input = new DataInputStream(socket.getInputStream());
@@ -45,7 +49,7 @@ public class PeerNode implements Runnable {
     }
 
     //PeerNode acting as a client constructor
-    void PeerNode(String UserName, String IPaddress, String portNum) {
+    PeerNode(String UserName, String IPaddress, String portNum) {
         this.UserName = UserName;
         this.IPaddress = IPaddress;
         this.portNum = Integer.parseInt(portNum);
@@ -62,6 +66,7 @@ public class PeerNode implements Runnable {
 
     void sendInfo() {
         String InfoMessage = "### p2p " + this.IPaddress + " " + this.portNum + " " + this.UserName;
+        System.out.print("info :"+InfoMessage);
         PewChatClient.frame.client.SendMessage(InfoMessage);
     }
 

@@ -15,7 +15,7 @@ public class Group {
     
     StringBuffer GroupName;
     StringBuffer Messages;
-    ArrayList<User> Participants;
+    static ArrayList<User> Participants;
     User Admin;
     static ArrayList<String> AllGroupsNames;
     
@@ -31,6 +31,10 @@ public class Group {
     
     public void addParticipant(User newParticipant){
        Participants.add(newParticipant);
+    }
+    
+    public void removeParticipant(User newParticipant){
+       Participants.remove(newParticipant);
     }
     
     
