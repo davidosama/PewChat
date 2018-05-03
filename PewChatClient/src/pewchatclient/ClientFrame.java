@@ -1,7 +1,10 @@
 package pewchatclient;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class ClientFrame extends javax.swing.JFrame {
     
@@ -15,7 +18,20 @@ public class ClientFrame extends javax.swing.JFrame {
      */
     public ClientFrame() {
         initComponents();
-        
+        ListSelectionListener listSelectionListener = new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                String selectedGroup = GroupsjList.getSelectedValue().toString();
+                for (int i =0 ; i<client.joinedGroups.size(); i++){
+                    if(client.joinedGroups.get(i).equals(selectedGroup)){
+                        JoinBtn.setEnabled(true);
+                    }
+                    else{
+                        JoinBtn.setEnabled(false);
+                    }
+                }
+            }
+        };
+        GroupsjList.addListSelectionListener(listSelectionListener);
     }
     public String getEncodedStatus(){
         if(StatusComboBox.getSelectedItem()=="Online"){
@@ -321,7 +337,6 @@ public class ClientFrame extends javax.swing.JFrame {
                             listModel.addElement(client.groupNames.get(i));
                             System.out.println(client.groupNames.get(i));
                         }
-                        System.out.println("asdkjashkdajshdkajshdakjsdhakjshdaksjdhaksjhdkajhdsas");
                         GroupsjList.setModel(listModel);
                         client.GroupListChanged=false;
                     }
@@ -363,6 +378,7 @@ public class ClientFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         String GroupName=GroupsjList.getSelectedValue().toString();
         client.SendMessage("### joingroup "+GroupName);
+        client.joinedGroups.add(GroupName);
     }//GEN-LAST:event_JoinBtnActionPerformed
 
     private void LeaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LeaveBtnActionPerformed

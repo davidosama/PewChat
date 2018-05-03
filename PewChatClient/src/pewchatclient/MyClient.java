@@ -20,6 +20,7 @@ public class MyClient {
     boolean UserStatusChanged = false;
     boolean GroupListChanged=false;
     ArrayList <String> groupNames;
+    ArrayList<String> joinedGroups;
 
     public DataInputStream getInput() {
         return input;
