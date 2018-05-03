@@ -26,8 +26,8 @@ public class PeerNode implements Runnable {
     private DataOutputStream output;
 
     //PeerNode acting as a Server constructor
-    void PeerNode(String UserName) {
-        this.UserName = UserName;
+    void PeerNode(String peerUserName) {
+        this.UserName = peerUserName;
         this.MessageHistory = new StringBuffer();
 
         try {

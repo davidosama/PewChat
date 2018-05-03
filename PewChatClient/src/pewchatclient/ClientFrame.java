@@ -2,12 +2,15 @@ package pewchatclient;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class ClientFrame extends javax.swing.JFrame {
     
     
     MyClient client ;
     static String msgRecieved;
+    boolean userslistLastClick=false;
     
 
     /**
@@ -15,6 +18,33 @@ public class ClientFrame extends javax.swing.JFrame {
      */
     public ClientFrame() {
         initComponents();
+        ListSelectionListener listSelectionListener = new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                userslistLastClick=false;
+                String selectedGroup = GroupsjList.getSelectedValue().toString();
+                boolean disabled = false;
+                for (int i = 0; i < client.joinedGroups.size(); i++) {
+                    if (client.joinedGroups.get(i).equals(selectedGroup)) {
+                        JoinBtn.setEnabled(false);
+                        disabled = true;
+                    }
+                }
+                if (!disabled) {
+                    JoinBtn.setEnabled(true);
+                }
+
+            }
+
+        };
+        GroupsjList.addListSelectionListener(listSelectionListener);
+        ListSelectionListener userslistListener = new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                userslistLastClick=true;
+
+            }
+
+        };
+        UsersjList.addListSelectionListener(listSelectionListener);
         
     }
     public String getEncodedStatus(){
@@ -266,7 +296,9 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_DisconnectBtnActionPerformed
 
     private void ConnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectBtnActionPerformed
-        //System.out.println("HashMap in the beginning of Connect size "+ client.OtherUserStatus.size());
+JoinBtn.setEnabled(true);
+LeaveBtn.setEnabled(true);
+//System.out.println("HashMap in the beginning of Connect size "+ client.OtherUserStatus.size());
         client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
         client.SendMessage("### myname "+UsernameTextField.getText());
         DisconnectBtn.setEnabled(true);
@@ -333,7 +365,18 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_ConnectBtnActionPerformed
 
     private void SendBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendBtnActionPerformed
-        client.SendMessage(MsgTextArea.getText());
+//        if(GroupsjList.getSel){
+//        }
+        if(userslistLastClick){
+            //if send to a p2p
+            client.SendMessage("### p2p "+"..el Ip w el adress....."+ UsersjList.getSelectedValue().toString() +MsgTextArea.getText());
+        }
+        else{
+            //if send to a group
+            client.SendMessage("### groupmsg "+GroupsjList.getSelectedValue().toString()+" "+MsgTextArea.getText());
+            
+        }
+        
         ChatTextArea.append("\n"+MsgTextArea.getText());
         MsgTextArea.setText("");//to clear the chat text area after sending
         
@@ -354,6 +397,7 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_StatusComboBoxActionPerformed
 
     private void CreateGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateGroupBtnActionPerformed
+        JoinBtn.setEnabled(true);
         String GroupName = JOptionPane.showInputDialog(this, "Enter Group Name");
         client.SendMessage("### creategroup "+GroupName);
         

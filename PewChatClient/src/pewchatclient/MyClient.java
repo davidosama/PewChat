@@ -20,6 +20,7 @@ public class MyClient {
     boolean UserStatusChanged = false;
     boolean GroupListChanged;
     ArrayList <String> groupNames;
+    ArrayList <String> joinedGroups;
 
     public DataInputStream getInput() {
         return input;
@@ -42,6 +43,7 @@ public class MyClient {
             isConnected = true;
             GroupListChanged=false;
             groupNames=new ArrayList<String>();
+            joinedGroups=new ArrayList<String>();
 
         } catch (UnknownHostException u) {
             System.out.println(u);
