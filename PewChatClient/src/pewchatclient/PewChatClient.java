@@ -12,12 +12,7 @@ public class PewChatClient {
     static ClientFrame frame;
     
     public static void main(String[] args) {
-        frame = new ClientFrame();
-        PeerNode PN1 = new PeerNode("Toni");
-        PeerNode PN2 = new PeerNode("Yaso","127.0.0.1","9999");
-        
-
-        
+        frame = new ClientFrame();       
     }
     
 }

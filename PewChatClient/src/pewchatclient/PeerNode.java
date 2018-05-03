@@ -31,7 +31,7 @@ public class PeerNode implements Runnable {
         this.MessageHistory = new StringBuffer();
 
         try {
-            serverSocket = new ServerSocket(9999);
+            serverSocket = new ServerSocket(0);
             
             this.portNum = serverSocket.getLocalPort();
             this.IPaddress = serverSocket.getInetAddress().toString();
@@ -65,6 +65,7 @@ public class PeerNode implements Runnable {
     }
 
     void sendInfo() {
+        
         String InfoMessage = "### p2p " + this.IPaddress + " " + this.portNum + " " + this.UserName;
         System.out.print("info :"+InfoMessage);
         PewChatClient.frame.client.SendMessage(InfoMessage);
