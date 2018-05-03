@@ -1,5 +1,5 @@
 send below string after server connection to tell the server your name is david
-### myname david
+### myname david Online
 
 send below string after server connection to tell the server your status is online
 ### mystatus online
@@ -20,7 +20,7 @@ toni wants to chat P2P with mina (from main server to peer client (mina) )
 ### p2p 192.168.1.110 9000 toni
 
 server is broadcasting all users' statues
-### statusbroadcast\n
+### statusbroadcast \n
 david online \n
 toni busy \n
 
