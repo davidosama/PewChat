@@ -19,14 +19,20 @@ public class ClientFrame extends javax.swing.JFrame {
         initComponents();
         ListSelectionListener listSelectionListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                boolean disabled = false;
                 String selectedGroup = GroupsjList.getSelectedValue().toString();
-                System.out.println("Selected Group is"+selectedGroup);
+                System.out.println("Selected Group is" + selectedGroup);
                 for (int i = 0; i < client.joinedGroups.size(); i++) {
+                    System.out.println("lesa mada5altesh " + client.joinedGroups.get(i) + "askdajlsk" + selectedGroup);
                     if (client.joinedGroups.get(i).equals(selectedGroup)) {
+                        System.out.println("DA5ALT " + client.joinedGroups.get(i) + "askdajlsk" + selectedGroup);
                         JoinBtn.setEnabled(false);
+                        disabled = true;
                     }
                 }
-                JoinBtn.setEnabled(true);
+                if (!disabled) {
+                    JoinBtn.setEnabled(true);
+                }
 
             }
         };
@@ -381,6 +387,7 @@ public class ClientFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         String GroupName=GroupsjList.getSelectedValue().toString();
         client.joinedGroups.add(GroupName);
+        JoinBtn.setEnabled(false);
         client.SendMessage("### joingroup "+GroupName);
         System.out.println("JOINED GROUPS");
         for(int i =0;i<client.joinedGroups.size();i++){
