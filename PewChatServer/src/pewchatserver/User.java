@@ -99,6 +99,8 @@ public class User implements Runnable {
     public void createGroup(String groupName) {
         Group g = new Group(groupName, this);
         PewChatServer.groups.add(g);
+        broadcastGroupNames();
+        
     }
 
     public void joinGroup(String groupName) {
@@ -149,6 +151,19 @@ public class User implements Runnable {
         for (User user : PewChatServer.users) {
             try {
                 user.outputStream.writeUTF(message.toString());
+            } catch (IOException ex) {
+
+            }
+        }
+    }
+    
+    public void broadcastGroupNames() {
+        StringBuffer groupnames = new StringBuffer("### groupnamesbroadcast ");
+        groupnames.append(Group.AllGroupsNames);
+        System.out.println(groupnames.toString());
+        for (User user : PewChatServer.users) {
+            try {
+                user.outputStream.writeUTF(groupnames.toString());
             } catch (IOException ex) {
 
             }

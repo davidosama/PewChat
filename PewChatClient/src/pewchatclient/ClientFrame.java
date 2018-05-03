@@ -8,7 +8,6 @@ public class ClientFrame extends javax.swing.JFrame {
     
     MyClient client ;
     static String msgRecieved;
-    DefaultListModel<String> GroupsListModel = new DefaultListModel<>();
     
 
     /**
@@ -309,6 +308,27 @@ public class ClientFrame extends javax.swing.JFrame {
             }
         });
         t2.start();
+        
+        
+        Thread groupThreads = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    System.out.println("Check groupnames is running");
+                    if (client.GroupListChanged == true) {
+                        DefaultListModel listModel=new DefaultListModel();
+                        for (int i =0; i<client.groupNames.size();i++){
+                            listModel.addElement(client.groupNames.get(i));
+                            System.out.println(client.groupNames.get(i));
+                        }
+                        System.out.println("asdkjashkdajshdkajshdakjsdhakjshdaksjdhaksjhdkajhdsas");
+                        GroupsjList.setModel(listModel);
+                        client.GroupListChanged=false;
+                    }
+                }
+            }
+        });
+        groupThreads.start();
     }//GEN-LAST:event_ConnectBtnActionPerformed
 
     private void SendBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendBtnActionPerformed
@@ -335,6 +355,8 @@ public class ClientFrame extends javax.swing.JFrame {
     private void CreateGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateGroupBtnActionPerformed
         String GroupName = JOptionPane.showInputDialog(this, "Enter Group Name");
         client.SendMessage("### creategroup "+GroupName);
+        
+        
     }//GEN-LAST:event_CreateGroupBtnActionPerformed
 
     private void JoinBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JoinBtnActionPerformed

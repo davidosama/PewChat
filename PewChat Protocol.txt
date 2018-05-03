@@ -19,6 +19,12 @@ send below string to tell the server to chat P2P with my address, port to mina (
 toni wants to chat P2P with mina (from main server to peer client (mina) )
 ### p2p 192.168.1.110 9000 toni
 
+send Message to a group
+### groupmsg groupname message
+
+server broadcast groupnames to all clients
+### groupnamesbroadcast StringBufferOfAllGroupNames
+
 server is broadcasting all users' statues
 ### statusbroadcast\n
 david online \n

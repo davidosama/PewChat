@@ -19,6 +19,7 @@ public class MyClient {
     ArrayList<User> OtherUserStatus = new ArrayList<User>();
     boolean UserStatusChanged = false;
     boolean GroupListChanged=false;
+    ArrayList <String> groupNames;
 
     public DataInputStream getInput() {
         return input;
@@ -63,14 +64,21 @@ public class MyClient {
                         StringTokenizer tokens = new StringTokenizer(msg, " ");
                         if (tokens.nextToken().equals("###")) {
                             System.out.println("Server message received: " + msg);
-                            String peertopeer = tokens.nextToken();
-                            if (peertopeer.equals("p2p")) {
+                            String settingMsg = tokens.nextToken();
+                            if (settingMsg.equals("p2p")) {
                                 String IP = tokens.nextToken();
                                 String PortNum = tokens.nextToken();
                                 String UserName = tokens.nextToken();
-                                PeerNode PN = new PeerNode(UserName, IP, PortNum);
+                                //PeerNode PN = new PeerNode(UserName, IP, PortNum);
                             }
-
+                            else if(settingMsg.equals("groupnamesbroadcast"))
+                            {
+                                
+                                String g = tokens.nextToken();
+                                setGroupNames(g);
+                                GroupListChanged=true;
+                            }
+                            //else if(settingMsg.equals())
                         } else {
                             System.out.println("Message received: " + msg);
                             Messages.append("\n").append(msg);
@@ -123,6 +131,16 @@ public class MyClient {
         } catch (IOException ex) {
 
         }
+    }
+    
+    public void setGroupNames(String groupnames){
+        StringTokenizer tokens = new StringTokenizer(groupnames, " ");
+        ArrayList<String> names=new ArrayList<String>();
+        while(tokens.hasMoreTokens()){
+            String gn = tokens.nextToken();
+            groupNames.add(gn);
+        }
+        groupNames=names;
     }
 
 }
