@@ -149,7 +149,8 @@ public class User implements Runnable {
     public void broadcastGroupNames() {
         StringBuffer groupnames = new StringBuffer("### groupnamesbroadcast ");
         groupnames.append(Group.AllGroupsNames);
-        System.out.println(groupnames.toString());
+        System.out.println("GroupNames with toString() "+groupnames.toString());
+        
         for (User user : PewChatServer.users) {
             try {
                 user.outputStream.writeUTF(groupnames.toString());

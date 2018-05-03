@@ -306,6 +306,7 @@ public class ClientFrame extends javax.swing.JFrame {
                 while (true) {
                     System.out.println("Check groupnames is running");
                     if (client.GroupListChanged == true) {
+                        System.out.println("GrouListChanged = true");
                         DefaultListModel listModel=new DefaultListModel();
                         for (int i =0; i<client.groupNames.size();i++){
                             listModel.addElement(client.groupNames.get(i));

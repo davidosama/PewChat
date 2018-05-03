@@ -18,7 +18,7 @@ public class MyClient {
     Boolean isConnected = false;
     ArrayList<User> OtherUserStatus = new ArrayList<User>();
     boolean UserStatusChanged = false;
-    boolean GroupListChanged=false;
+    boolean GroupListChanged;
     ArrayList <String> groupNames;
 
     public DataInputStream getInput() {
@@ -40,6 +40,8 @@ public class MyClient {
             // sends output to the socket
             out = new DataOutputStream(socket.getOutputStream());
             isConnected = true;
+            GroupListChanged=false;
+            groupNames=new ArrayList<String>();
 
         } catch (UnknownHostException u) {
             System.out.println(u);
@@ -65,6 +67,7 @@ public class MyClient {
                         if (tokens.nextToken().equals("###")) {
                             System.out.println("Server message received: " + msg);
                             String settingMsg = tokens.nextToken();
+                            System.out.println("settingMsg"+settingMsg);
                             if (settingMsg.equals("p2p")) {
                                 String IP = tokens.nextToken();
                                 String PortNum = tokens.nextToken();
@@ -73,10 +76,11 @@ public class MyClient {
                             }
                             else if(settingMsg.equals("groupnamesbroadcast"))
                             {
-                                
-                                String g = tokens.nextToken();
-                                setGroupNames(g);
+                                System.out.println("I ammm here babe");
+                                //String g = tokens.nextToken();
+                                setGroupNames(tokens);
                                 GroupListChanged=true;
+                                System.out.println("GrouListChanged is set to true");
                             }
                             //else if(settingMsg.equals())
                         } else {
@@ -133,14 +137,17 @@ public class MyClient {
         }
     }
     
-    public void setGroupNames(String groupnames){
-        StringTokenizer tokens = new StringTokenizer(groupnames, " ");
+    public void setGroupNames(StringTokenizer tokens){
+        System.out.println("SetGroupnames");
         ArrayList<String> names=new ArrayList<String>();
         while(tokens.hasMoreTokens()){
             String gn = tokens.nextToken();
-            groupNames.add(gn);
+            System.out.println("Next Token is "+gn);
+            names.add(gn);
         }
+        System.out.println("Out of for loop in setGroupNamec");
         groupNames=names;
+        GroupListChanged=true;
     }
 
 }
