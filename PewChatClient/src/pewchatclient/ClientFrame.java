@@ -2,6 +2,8 @@ package pewchatclient;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class ClientFrame extends javax.swing.JFrame {
     
@@ -15,6 +17,20 @@ public class ClientFrame extends javax.swing.JFrame {
      */
     public ClientFrame() {
         initComponents();
+        ListSelectionListener listSelectionListener = new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                String selectedGroup = GroupsjList.getSelectedValue().toString();
+                System.out.println("Selected Group is"+selectedGroup);
+                for (int i = 0; i < client.joinedGroups.size(); i++) {
+                    if (client.joinedGroups.get(i).equals(selectedGroup)) {
+                        JoinBtn.setEnabled(false);
+                    }
+                }
+                JoinBtn.setEnabled(true);
+
+            }
+        };
+        GroupsjList.addListSelectionListener(listSelectionListener);
         
     }
     public String getEncodedStatus(){
@@ -276,6 +292,7 @@ public class ClientFrame extends javax.swing.JFrame {
         StatusComboBox.setEnabled(true);
         client.ReadMessage();
         client.SendMessage(getEncodedStatus());
+        JoinBtn.setEnabled(true);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -363,7 +380,13 @@ public class ClientFrame extends javax.swing.JFrame {
     private void JoinBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JoinBtnActionPerformed
         // TODO add your handling code here:
         String GroupName=GroupsjList.getSelectedValue().toString();
+        client.joinedGroups.add(GroupName);
         client.SendMessage("### joingroup "+GroupName);
+        System.out.println("JOINED GROUPS");
+        for(int i =0;i<client.joinedGroups.size();i++){
+            System.out.println(client.joinedGroups.get(i));
+        }
+        
     }//GEN-LAST:event_JoinBtnActionPerformed
 
     private void LeaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LeaveBtnActionPerformed
