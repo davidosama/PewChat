@@ -77,6 +77,7 @@ public class User implements Runnable {
                 case "myname":
                     this.name = tokens.nextToken();
                     broadcastStatus();
+                     broadcastGroupNames();
                     break;
                 case "mystatus":
                     this.status = tokens.nextToken();
@@ -97,6 +98,10 @@ public class User implements Runnable {
                     String GN =tokens.nextToken();
                     String msg=tokens.nextToken();
                     sendMessageToGroup(GN,msg);
+                case "kickout":
+                    String UserN = tokens.nextToken();
+                    String GroupN = tokens.nextToken();
+                    kickOutUser(UserN,GroupN);
                     break;
             }
         }
@@ -119,7 +124,7 @@ public class User implements Runnable {
 
     public void leaveGroup(String groupName) {
 
-        for (int i = 0; i < PewChatServer.groups.size(); i++) {
+     for (int i = 0; i < PewChatServer.groups.size(); i++) {
             if (PewChatServer.groups.get(i).GroupName.toString().equalsIgnoreCase(groupName)) {
                 PewChatServer.groups.get(i).removeParticipant(this);
             }
@@ -187,5 +192,16 @@ public class User implements Runnable {
             }
         }
     }
+    
+    public void kickOutUser (String Username, String GroupName){
+     for (int i = 0; i < PewChatServer.groups.size(); i++) {
+            if (PewChatServer.groups.get(i).GroupName.toString().equalsIgnoreCase(GroupName)) {
+                for(int j=0;j<PewChatServer.groups.get(i).Participants.size();j++){
+                    PewChatServer.groups.get(i).Participants.remove(j);
+    
+    }
 
+}
+     }
+    }
 }

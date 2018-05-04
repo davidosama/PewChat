@@ -98,6 +98,7 @@ public class ClientFrame extends javax.swing.JFrame {
         CreateGroupBtn = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         UsersjList = new javax.swing.JList<>();
+        KickOutBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PewChat");
@@ -192,6 +193,13 @@ public class ClientFrame extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(UsersjList);
 
+        KickOutBtn.setText("Kick out");
+        KickOutBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                KickOutBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -219,30 +227,33 @@ public class ClientFrame extends javax.swing.JFrame {
                         .addComponent(PortNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
-                        .addComponent(SendBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(SendBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addComponent(StatusLabel)
+                .addGap(18, 18, 18)
+                .addComponent(StatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(174, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(KickOutBtn)
+                .addGap(125, 125, 125))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(GroupsLabel)
                         .addGap(18, 18, 18)
-                        .addComponent(StatusLabel)
-                        .addGap(18, 18, 18)
-                        .addComponent(StatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(174, Short.MAX_VALUE))
+                        .addComponent(CreateGroupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(UserStatusLabel)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(GroupsLabel)
-                                .addGap(18, 18, 18)
-                                .addComponent(CreateGroupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(UserStatusLabel)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(JoinBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                                .addComponent(LeaveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addGap(0, 51, Short.MAX_VALUE))))
+                        .addComponent(JoinBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                        .addComponent(LeaveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(0, 51, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -269,23 +280,26 @@ public class ClientFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane5)
+                        .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
                         .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(GroupsLabel)
                             .addComponent(CreateGroupBtn))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane4)))
-                .addGap(29, 29, 29)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SendBtn)
                     .addComponent(JoinBtn)
                     .addComponent(LeaveBtn))
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(KickOutBtn)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         pack();
@@ -300,8 +314,10 @@ public class ClientFrame extends javax.swing.JFrame {
     private void ConnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectBtnActionPerformed
 JoinBtn.setEnabled(true);
 LeaveBtn.setEnabled(true);
+KickOutBtn.setEnabled(false);
 //System.out.println("HashMap in the beginning of Connect size "+ client.OtherUserStatus.size());
         client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
+        client.name = UsernameTextField.getText();
         client.SendMessage("### myname "+UsernameTextField.getText());
         DisconnectBtn.setEnabled(true);
         ConnectBtn.setEnabled(false);
@@ -311,6 +327,7 @@ LeaveBtn.setEnabled(true);
         client.ReadMessage();
         client.SendMessage(getEncodedStatus());
         JoinBtn.setEnabled(true);
+        client.GroupListChanged = true;
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -376,7 +393,7 @@ LeaveBtn.setEnabled(true);
         }
         else{
             //if send to a group
-            client.SendMessage("### groupmsg "+GroupsjList.getSelectedValue().toString()+" "+MsgTextArea.getText());
+            client.SendMessage("### groupmsg "+GroupsjList.getSelectedValue().toString()+" "+client.name+":"+MsgTextArea.getText());
             
         }
         
@@ -403,7 +420,8 @@ LeaveBtn.setEnabled(true);
         JoinBtn.setEnabled(true);
         String GroupName = JOptionPane.showInputDialog(this, "Enter Group Name");
         client.SendMessage("### creategroup "+GroupName);
-        
+        client.admin = true;
+        KickOutBtn.setEnabled(true);
         
     }//GEN-LAST:event_CreateGroupBtnActionPerformed
 
@@ -424,7 +442,19 @@ LeaveBtn.setEnabled(true);
         // TODO add your handling code here:
         String GroupName=GroupsjList.getSelectedValue().toString();
         client.SendMessage("### leavegroup "+GroupName);
+        LeaveBtn.setEnabled(false);
+        JoinBtn.setEnabled(true);
+        
+        
     }//GEN-LAST:event_LeaveBtnActionPerformed
+
+    private void KickOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KickOutBtnActionPerformed
+        // TODO add your handling code here:
+        String GroupNameSelected = GroupsjList.getSelectedValue().toString();
+        String UserSelected = UsersjList.getSelectedValue().toString();
+        client.SendMessage("### kickout "+UserSelected+" "+GroupNameSelected);
+        
+    }//GEN-LAST:event_KickOutBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -471,6 +501,7 @@ LeaveBtn.setEnabled(true);
     private javax.swing.JLabel GroupsLabel;
     private javax.swing.JList<String> GroupsjList;
     private javax.swing.JButton JoinBtn;
+    private javax.swing.JButton KickOutBtn;
     private javax.swing.JButton LeaveBtn;
     private javax.swing.JTextArea MsgTextArea;
     private javax.swing.JTextField PortNumTextField;

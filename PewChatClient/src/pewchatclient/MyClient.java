@@ -15,6 +15,8 @@ public class MyClient {
     StringBuffer Messages = new StringBuffer();
     boolean newMessage = false;
     String status = "";
+    String name = "";
+    boolean admin = false;
     Boolean isConnected = false;
     ArrayList<User> OtherUserStatus = new ArrayList<User>();
     boolean UserStatusChanged = false;
