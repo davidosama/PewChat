@@ -20,32 +20,34 @@ public class ClientFrame extends javax.swing.JFrame {
         initComponents();
         ListSelectionListener listSelectionListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                userslistLastClick=false;
+
+                userslistLastClick = false;
                 String selectedGroup = GroupsjList.getSelectedValue().toString();
                 boolean disabled = false;
                 for (int i = 0; i < client.joinedGroups.size(); i++) {
                     if (client.joinedGroups.get(i).equals(selectedGroup)) {
-                        JoinBtn.setEnabled(false);
                         disabled = true;
                     }
                 }
                 if (!disabled) {
                     JoinBtn.setEnabled(true);
+                } else {
+                    JoinBtn.setEnabled(false);
                 }
-
             }
-
-        };
-        GroupsjList.addListSelectionListener(listSelectionListener);
+            ;
+        
+        
         ListSelectionListener userslistListener = new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                userslistLastClick=true;
-
-            }
+                public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                    userslistLastClick = true;
+                }
+            };
 
         };
         UsersjList.addListSelectionListener(listSelectionListener);
-        
+        GroupsjList.addListSelectionListener(listSelectionListener);
+
     }
     public String getEncodedStatus(){
         if(StatusComboBox.getSelectedItem()=="Online"){
@@ -308,6 +310,7 @@ LeaveBtn.setEnabled(true);
         StatusComboBox.setEnabled(true);
         client.ReadMessage();
         client.SendMessage(getEncodedStatus());
+        JoinBtn.setEnabled(true);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -407,7 +410,14 @@ LeaveBtn.setEnabled(true);
     private void JoinBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JoinBtnActionPerformed
         // TODO add your handling code here:
         String GroupName=GroupsjList.getSelectedValue().toString();
+        client.joinedGroups.add(GroupName);
+        JoinBtn.setEnabled(false);
         client.SendMessage("### joingroup "+GroupName);
+        System.out.println("JOINED GROUPS");
+        for(int i =0;i<client.joinedGroups.size();i++){
+            System.out.println(client.joinedGroups.get(i));
+        }
+        
     }//GEN-LAST:event_JoinBtnActionPerformed
 
     private void LeaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LeaveBtnActionPerformed
