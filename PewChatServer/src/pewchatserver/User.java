@@ -170,6 +170,7 @@ public class User implements Runnable {
         for (User user : PewChatServer.users) {
             try {
                 user.outputStream.writeUTF(groupnames.toString());
+                System.out.println("GroupNamesBroadCast"+groupnames.toString());
             } catch (IOException ex) {
 
             }

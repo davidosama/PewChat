@@ -21,6 +21,7 @@ public class ClientFrame extends javax.swing.JFrame {
         initComponents();
         ListSelectionListener GroupsListListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                try{
                 userslistLastClick = false;
                 groupListLastClick=true;
                 boolean disabled = false;
@@ -40,6 +41,9 @@ public class ClientFrame extends javax.swing.JFrame {
                     JoinBtn.setEnabled(true);
                 }
 
+            }catch(Exception e){
+                System.out.println("EXCEPTION"+e.getMessage()+"    "+e.toString()+ "     "+e.getStackTrace());
+            }
             }
         };
         ListSelectionListener userslistListener = new ListSelectionListener() {
