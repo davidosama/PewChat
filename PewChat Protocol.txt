@@ -22,16 +22,8 @@ toni wants to chat P2P with mina (from main server to peer client (mina) )
 send Message to a group
 ### groupmsg groupname message
 
-
-
 server broadcast groupnames to all clients
 ### groupnamesbroadcast StringBufferOfAllGroupNames
-
-client tells the server send me Group message history
-### sendmeGrp GroupName
-
-Server send back to client group msg History
-### groupmsghisttoclient
 
 server is broadcasting all users' statues
 ### statusbroadcast\n
