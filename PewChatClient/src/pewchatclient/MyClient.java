@@ -84,12 +84,6 @@ public class MyClient {
                                 GroupListChanged=true;
                                 System.out.println("GrouListChanged is set to true");
                             }
-//                            else if(settingMsg.equals("groupmsghisttoclient")){
-////                                Messages= new StringBuffer(tokens.nextToken()) ;
-//                                  Messages.append(tokens.nextToken().toString());
-//                                
-//                               
-//                            }
                             //else if(settingMsg.equals())
                         } else {
                             System.out.println("Message received: " + msg);
