@@ -3,6 +3,8 @@ package pewchatserver;
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class User implements Runnable {
 
@@ -92,6 +94,11 @@ public class User implements Runnable {
                 case "p2p":
                     createP2Pchat(message);
                     break;
+                case "groupmsg":
+                    String GN = tokens.nextToken();
+                    String msg =tokens.nextToken();
+                    sendMessageToGroup(GN,msg);
+                    break;
             }
         }
     }
@@ -168,5 +175,24 @@ public class User implements Runnable {
             }
         }
     }
+    
+    public void sendMessageToGroup(String GN, String msg){
+        for (int i = 0; i < PewChatServer.groups.size(); i++) {
+            if (PewChatServer.groups.get(i).GroupName.toString().equalsIgnoreCase(GN)) {
+                for(int j=0;j<PewChatServer.groups.get(i).Participants.size();j++){
+                    try {
+                        PewChatServer.groups.get(i).Participants.get(j).outputStream.writeUTF(msg);
+                    } catch (IOException ex) {
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                
+            }
+        }
+        
+        
+        
+    }
+    
 
 }

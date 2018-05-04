@@ -10,6 +10,8 @@ public class ClientFrame extends javax.swing.JFrame {
     
     MyClient client ;
     static String msgRecieved;
+    boolean userslistLastClick=false;
+    boolean groupListLastClick=false;
     
 
     /**
@@ -17,8 +19,10 @@ public class ClientFrame extends javax.swing.JFrame {
      */
     public ClientFrame() {
         initComponents();
-        ListSelectionListener listSelectionListener = new ListSelectionListener() {
+        ListSelectionListener GroupsListListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                userslistLastClick = false;
+                groupListLastClick=true;
                 boolean disabled = false;
                 String selectedGroup = GroupsjList.getSelectedValue().toString();
                 System.out.println("Selected Group is" + selectedGroup);
@@ -32,11 +36,20 @@ public class ClientFrame extends javax.swing.JFrame {
                 }
                 if (!disabled) {
                     JoinBtn.setEnabled(true);
+                } else {
+                    JoinBtn.setEnabled(true);
                 }
 
             }
         };
-        GroupsjList.addListSelectionListener(listSelectionListener);
+        ListSelectionListener userslistListener = new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+                userslistLastClick = true;
+                groupListLastClick=false;
+            }
+        };
+        GroupsjList.addListSelectionListener(GroupsListListener);
+        UsersjList.addListSelectionListener(GroupsListListener);
         
     }
     public String getEncodedStatus(){
@@ -299,6 +312,7 @@ public class ClientFrame extends javax.swing.JFrame {
         client.ReadMessage();
         client.SendMessage(getEncodedStatus());
         JoinBtn.setEnabled(true);
+        LeaveBtn.setEnabled(true);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -356,7 +370,14 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_ConnectBtnActionPerformed
 
     private void SendBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendBtnActionPerformed
-        client.SendMessage(MsgTextArea.getText());
+        if(userslistLastClick){
+            //if send to a p2p
+            client.SendMessage("### p2p "+"..el Ip w el adress....."+ UsersjList.getSelectedValue().toString() +MsgTextArea.getText());
+        }
+        else if(groupListLastClick){
+            client.SendMessage("### groupmsg "+GroupsjList.getSelectedValue().toString()+" "+MsgTextArea.getText());
+        }
+        //client.SendMessage(MsgTextArea.getText());
         ChatTextArea.append("\n"+MsgTextArea.getText());
         MsgTextArea.setText("");//to clear the chat text area after sending
         
@@ -377,6 +398,7 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_StatusComboBoxActionPerformed
 
     private void CreateGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateGroupBtnActionPerformed
+        JoinBtn.setEnabled(true);
         String GroupName = JOptionPane.showInputDialog(this, "Enter Group Name");
         client.SendMessage("### creategroup "+GroupName);
         

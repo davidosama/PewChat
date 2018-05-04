@@ -67,9 +67,8 @@ public class MyClient {
                         String msg = input.readUTF();
                         StringTokenizer tokens = new StringTokenizer(msg, " ");
                         if (tokens.nextToken().equals("###")) {
-                            System.out.println("Server message received: " + msg);
+                            
                             String settingMsg = tokens.nextToken();
-                            System.out.println("settingMsg"+settingMsg);
                             if (settingMsg.equals("p2p")) {
                                 String IP = tokens.nextToken();
                                 String PortNum = tokens.nextToken();
@@ -78,8 +77,6 @@ public class MyClient {
                             }
                             else if(settingMsg.equals("groupnamesbroadcast"))
                             {
-                                System.out.println("I ammm here babe");
-                                //String g = tokens.nextToken();
                                 setGroupNames(tokens);
                                 GroupListChanged=true;
                                 System.out.println("GrouListChanged is set to true");
