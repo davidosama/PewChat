@@ -21,3 +21,6 @@ send below string to tell the server to join group named Pew
 
 send below string to tell the server to leave group named Pew
 ### leavegroup Pew
+
+kick out a user from a group
+### kickout yasmin Pew
