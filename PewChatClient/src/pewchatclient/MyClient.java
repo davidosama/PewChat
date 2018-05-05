@@ -16,7 +16,7 @@ public class MyClient {
     boolean newMessage = false;
     String status = "";
     Boolean isConnected = false;
-    ArrayList <User> OtherUserStatus = new ArrayList<User>();
+    ArrayList<User> OtherUserStatus = new ArrayList<User>();
     boolean UserStatusChanged = false;
 
     public DataInputStream getInput() {
@@ -40,19 +40,19 @@ public class MyClient {
             isConnected = true;
 
         } catch (UnknownHostException u) {
-            System.out.println(u);
+            u.printStackTrace();
+            System.out.println("UnknowHostException inside MyClient constructor");
         } catch (IOException i) {
-            System.out.println(i);
+            i.printStackTrace();
+            System.out.println("IOException inside MyClient constructor");
         }
 
     }
 
     void ReadMessage() {
-        System.out.println("ReadMessage called.");
         readThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("ReadMessage thread called.");
                 try {
                     while (true) {
                         System.out.println("ReadMessage while called.");
@@ -60,9 +60,10 @@ public class MyClient {
                         // read the message sent to this client
                         String msg = input.readUTF();
 
-                        if (msg.matches("^###")) {
+                        StringTokenizer tokens = new StringTokenizer(msg, " ");
+                        if (tokens.nextToken().equals("###")) {
                             System.out.println("Server message received: " + msg);
-                            if (msg.matches("^### statusbroadcast")) {
+                            if (tokens.nextToken().equals("statusbroadcast")) {
                                 updateUsersStatuses(msg);
                             }
                         } else {
@@ -74,14 +75,15 @@ public class MyClient {
 
                     }
                 } catch (IOException e) {
-                    System.out.println("IO Exception");
+                    e.printStackTrace();
+                    System.out.println("IOException inside ReadMessage thread");
                 } catch (Exception ex) {
-                    System.out.println("Exception");
+                    ex.printStackTrace();
+                    System.out.println("Exception inside ReadMessage thread");
                 }
             }
 
         });
-        System.out.println("HashMap in the end of readMessage size " + OtherUserStatus.size());
         readThread.start();
     }
 
@@ -89,33 +91,49 @@ public class MyClient {
         try {
             out.writeUTF(message);
         } catch (IOException e) {
-
+            e.printStackTrace();
+            System.out.println("IOException inside sendMessage");
         }
 
     }
 
     void updateUsersStatuses(String msg) {
+        System.out.println("Broadcast message: " + msg);
         StringTokenizer tokens = new StringTokenizer(msg, "\n");
         tokens.nextToken();
         while (tokens.hasMoreTokens()) {
             StringTokenizer user = new StringTokenizer(tokens.nextToken(), " ");
-            String userName = tokens.nextToken();
-            String userStatus = tokens.nextToken();
+            String userName = user.nextToken();
+            String userStatus = user.nextToken();
             //check if last \n is a token
             System.out.println("user: " + userName + " - status: " + userStatus);
-            
-            OtherUserStatus.add(new User(userName, userStatus));
+
+            boolean userAlreadyExist = false;
+
+            for (User u : OtherUserStatus) {
+                if (userName.equals(u.name)) {
+                    u.status = userStatus;
+                    userAlreadyExist = true;
+                    break;
+                }
+            }
+            if (!userAlreadyExist) {
+                OtherUserStatus.add(new User(userName, userStatus));
+            }
         }
         UserStatusChanged = true;
     }
 
     void closeConnection() {
+        this.isConnected = false;
+        //add closing all P2P connections
         try {
             this.out.close();
             this.input.close();
             this.socket.close();
         } catch (IOException ex) {
-
+            ex.printStackTrace();
+            System.out.println("IOException inside closeConnection()");
         }
     }
 
