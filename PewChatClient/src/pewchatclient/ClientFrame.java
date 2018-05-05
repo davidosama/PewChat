@@ -13,6 +13,7 @@ public class ClientFrame extends javax.swing.JFrame {
     boolean userslistLastClick=false;
     String LastGroupSelected="";
     //boolean changedGroupSelection=false;
+    DefaultListModel<String> UserslistModel = new DefaultListModel<String>();
     
 
     /**
@@ -54,26 +55,40 @@ public class ClientFrame extends javax.swing.JFrame {
                 }
             };
 
-        
         UsersjList.addListSelectionListener(GroupListListener);
         GroupsjList.addListSelectionListener(GroupListListener);
+        UsersjList.setModel(UserslistModel);
 
     }
-    public String getEncodedStatus(){
-        if(StatusComboBox.getSelectedItem()=="Online"){
-            return "### mystatus Online";
+    
+    public String getCurrentStatus() {
+        if (StatusComboBox.getSelectedItem() == "Online") {
+            return "Online";
+        } else if (StatusComboBox.getSelectedItem() == "Busy") {
+            return "Busy";
+        } else if (StatusComboBox.getSelectedItem() == "Away") {
+            return "Away";
+        } else if (StatusComboBox.getSelectedItem() == "Offline") {
+            return "Offline";
+        } else {
+            return "Error";
         }
-        else if(StatusComboBox.getSelectedItem()=="Busy"){
-            return "### mystatus Busy";
-        }
-        else if(StatusComboBox.getSelectedItem()=="Away"){
-            return "### mystatus Away";
-        }
-        else if(StatusComboBox.getSelectedItem()=="Offline"){
-            return "### mystatus Offline";
-        }
-        else return "Error";
-   }
+    }
+//    public String getEncodedStatus(){
+//        if(StatusComboBox.getSelectedItem()=="Online"){
+//            return "### mystatus Online";
+//        }
+//        else if(StatusComboBox.getSelectedItem()=="Busy"){
+//            return "### mystatus Busy";
+//        }
+//        else if(StatusComboBox.getSelectedItem()=="Away"){
+//            return "### mystatus Away";
+//        }
+//        else if(StatusComboBox.getSelectedItem()=="Offline"){
+//            return "### mystatus Offline";
+//        }
+//        else return "Error";
+//   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -328,16 +343,16 @@ KickOutBtn.setEnabled(false);
 //System.out.println("HashMap in the beginning of Connect size "+ client.OtherUserStatus.size());
         client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
         client.name = UsernameTextField.getText();
-        client.SendMessage("### myname "+UsernameTextField.getText());
+        client.SendMessage("### myname " + UsernameTextField.getText() + " " + getCurrentStatus());
         DisconnectBtn.setEnabled(true);
         ConnectBtn.setEnabled(false);
         SendBtn.setEnabled(true);
         CreateGroupBtn.setEnabled(true);
         StatusComboBox.setEnabled(true);
         client.ReadMessage();
-        client.SendMessage(getEncodedStatus());
         JoinBtn.setEnabled(true);
         client.GroupListChanged = true;
+        
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -358,14 +373,19 @@ KickOutBtn.setEnabled(false);
             @Override
             public void run() {
                 while (true) {
-                    System.out.println("Check UsersStatusArea is running");
+                    System.out.print("");
                     if (client.UserStatusChanged == true) {
-                        for ( int i = 0; i < client.OtherUserStatus.size(); i++){
+                        System.out.println("it should have update users JList");
+//                        DefaultListModel<String> UserslistModel = new DefaultListModel<String>();
+//                        UserslistModel.clear();
+                        UserslistModel = new DefaultListModel<String>();
+                        for (int i = 0; i < client.OtherUserStatus.size(); i++) {
                             User user = client.OtherUserStatus.get(i);
-                            //show all users with their statuses in the JList
-//                            UsersjList.add(i, user.name+" - "+user.status);
+                            System.out.println(user.name + " is " + user.status);
+                            UserslistModel.addElement(user.name + " - " + user.status);
                         }
-                        client.UserStatusChanged=false;
+                        UsersjList.setModel(UserslistModel);
+                        client.UserStatusChanged = false;
                     }
                 }
             }
@@ -431,16 +451,10 @@ KickOutBtn.setEnabled(false);
     }//GEN-LAST:event_SendBtnActionPerformed
 
     private void StatusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StatusComboBoxActionPerformed
-        try {
-            if (client.isConnected == true) {
-                client.status = (String) StatusComboBox.getSelectedItem();
-                client.UserStatusChanged=true;
-                client.SendMessage(getEncodedStatus());
-            } else {
-
-            }
-        } catch (Exception ex) {
-            System.out.println("Connected Not Pressed, client is still not instantiated");
+        if (client.isConnected == true) {
+            client.status = (String) StatusComboBox.getSelectedItem();
+            client.UserStatusChanged = true;
+            client.SendMessage("### mystatus " + getCurrentStatus());
         }
     }//GEN-LAST:event_StatusComboBoxActionPerformed
 

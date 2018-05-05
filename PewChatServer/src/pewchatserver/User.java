@@ -40,25 +40,26 @@ public class User implements Runnable {
                     HandleServerMessage(recieved);
                 }
 
-                if (recieved.equals("logout")) {
-                    this.isOnline = false;
-                    this.socket.close();
-                    break;
-                }
-
             } catch (IOException e) {
+                for (int i = 0; i < PewChatServer.users.size(); i++) {
+                    if (this.name.equals(PewChatServer.users.get(i).name)) {
+                        PewChatServer.users.remove(i);
+                        break;
+                    }
 
+                    
+            }
             }
 
         }
-        try {
-            // closing resources
-            this.inputStream.close();
-            this.outputStream.close();
-
-        } catch (IOException e) {
-
-        }
+//        try {
+//            // closing resources
+//            this.inputStream.close();
+//            this.outputStream.close();
+//
+//        } catch (IOException e) {
+//
+//        }
     }
 
     public boolean isServerMessage(String message) {
@@ -81,6 +82,7 @@ public class User implements Runnable {
                     break;
                 case "mystatus":
                     this.status = tokens.nextToken();
+                    updateStatus(message);
                     broadcastStatus();
                     break;
                 case "creategroup":
@@ -170,15 +172,18 @@ public class User implements Runnable {
     }
 
     public void broadcastGroupNames() {
-        StringBuffer groupnames = new StringBuffer("### groupnamesbroadcast ");
-        groupnames.append(Group.AllGroupsNames);
-        System.out.println("GroupNames with toString() "+groupnames.toString());
+        System.out.println("Sending broadcast message to " + PewChatServer.users.size() + " client(s)");
+        StringBuffer message = new StringBuffer("### statusbroadcast \n");
         
         for (User user : PewChatServer.users) {
-            try {
-                user.outputStream.writeUTF(groupnames.toString());
-            } catch (IOException ex) {
+            message.append(user.name + " " + user.status + " \n");
+        }
 
+        for (User user : PewChatServer.users) {
+            try {
+                user.outputStream.writeUTF(message.toString());
+            } catch (IOException ex) {
+                System.out.println("Exceptioonnnnnnn");
             }
         }
     }
@@ -234,5 +239,33 @@ public class User implements Runnable {
             msg.append(tokens.nextToken());
         }
         return msg;
+    }
+    public void closeConnection() {
+        this.isOnline = false;
+        try {
+            this.inputStream.close();
+            this.outputStream.close();
+            this.socket.close();
+        } catch (IOException ex) {
+
+        }
+        for (int i = 0; i < PewChatServer.users.size(); i++) {
+            if (this.name.equals(PewChatServer.users.get(i).name)) {
+                PewChatServer.users.remove(i);
+                break;
+            }
+        }
+    }
+    public void updateStatus(String message) {
+        StringTokenizer tokens = new StringTokenizer(message, " ");
+        if(tokens.nextToken().equals("###")){
+            if(tokens.nextToken().equals("myname")){
+                this.name = tokens.nextToken();
+                this.status = tokens.nextToken();
+            }
+            else if (tokens.nextToken().equals("mystatus")){
+                this.status = tokens.nextToken();
+            }
+        }
     }
 }

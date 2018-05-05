@@ -73,7 +73,10 @@ public class MyClient {
                             System.out.println("Server message received: " + msg);
                             String settingMsg = tokens.nextToken();
                             System.out.println("settingMsg"+settingMsg);
-                            if (settingMsg.equals("p2p")) {
+                            if (tokens.nextToken().equals("statusbroadcast")) {
+                                updateUsersStatuses(msg);
+                            }
+                            else if (settingMsg.equals("p2p")) {
                                 String IP = tokens.nextToken();
                                 String PortNum = tokens.nextToken();
                                 String UserName = tokens.nextToken();
@@ -148,27 +151,42 @@ public class MyClient {
     }
 
     void updateUsersStatuses(String msg) {
+        System.out.println("Broadcast message: " + msg);
         StringTokenizer tokens = new StringTokenizer(msg, "\n");
         tokens.nextToken();
         while (tokens.hasMoreTokens()) {
             StringTokenizer user = new StringTokenizer(tokens.nextToken(), " ");
-            String userName = tokens.nextToken();
-            String userStatus = tokens.nextToken();
+            String userName = user.nextToken();
+            String userStatus = user.nextToken();
             //check if last \n is a token
             System.out.println("user: " + userName + " - status: " + userStatus);
 
-            OtherUserStatus.add(new User(userName, userStatus));
+            boolean userAlreadyExist = false;
+
+            for (User u : OtherUserStatus) {
+                if (userName.equals(u.name)) {
+                    u.status = userStatus;
+                    userAlreadyExist = true;
+                    break;
+                }
+            }
+            if (!userAlreadyExist) {
+                OtherUserStatus.add(new User(userName, userStatus));
+            }
         }
         UserStatusChanged = true;
     }
 
     void closeConnection() {
+        this.isConnected = false;
+        //add closing all P2P connections
         try {
             this.out.close();
             this.input.close();
             this.socket.close();
         } catch (IOException ex) {
-
+            ex.printStackTrace();
+            System.out.println("IOException inside closeConnection()");
         }
     }
     
