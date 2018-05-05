@@ -73,7 +73,7 @@ public class MyClient {
                             System.out.println("Server message received: " + msg);
                             String settingMsg = tokens.nextToken();
                             System.out.println("settingMsg"+settingMsg);
-                            if (tokens.nextToken().equals("statusbroadcast")) {
+                            if (settingMsg.equals("statusbroadcast")) {
                                 updateUsersStatuses(msg);
                             }
                             else if (settingMsg.equals("p2p")) {
