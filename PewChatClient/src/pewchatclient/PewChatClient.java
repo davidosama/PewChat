@@ -1,9 +1,5 @@
 package pewchatclient;
 
-import java.net.*;
-import java.io.*;
-import java.util.*;
-
 public class PewChatClient {
 
     /**
@@ -14,8 +10,7 @@ public class PewChatClient {
     public static void main(String[] args) {
         frame = new ClientFrame();
         frame.setVisible(true);
-        
 
     }
-    
+
 }
