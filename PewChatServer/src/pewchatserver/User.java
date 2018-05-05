@@ -78,6 +78,7 @@ public class User implements Runnable {
                     this.name = tokens.nextToken();
                     broadcastStatus();
                      broadcastGroupNames();
+                   
                     break;
                 case "mystatus":
                     this.status = tokens.nextToken();
@@ -94,14 +95,15 @@ public class User implements Runnable {
                     break;
                 case "p2p":
                     createP2Pchat(message);
+                    break;
                 case "groupmsg":
                     String GN =tokens.nextToken();
                     String msg=tokens.nextToken();
                     sendMessageToGroup(GN,msg);
+                    break;
                 case "kickout":
                     String UserN = tokens.nextToken();
-                    String GroupN = tokens.nextToken();
-                    kickOutUser(UserN,GroupN);
+                    kickOutUser(UserN);
                     break;
             }
         }
@@ -118,7 +120,14 @@ public class User implements Runnable {
         for (int i = 0; i < PewChatServer.groups.size(); i++) {
             if (PewChatServer.groups.get(i).GroupName.toString().equalsIgnoreCase(groupName)) {
                 PewChatServer.groups.get(i).addParticipant(this);
+                 for(int j=0; j<PewChatServer.groups.get(i).Participants.size();j++ ){
+                    try {
+                        PewChatServer.groups.get(i).Participants.get(j).outputStream.writeUTF(this.name+" joined the group");
+                    } catch (IOException ex) {
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                    }
             }
+        }
         }
     }
 
@@ -127,9 +136,20 @@ public class User implements Runnable {
      for (int i = 0; i < PewChatServer.groups.size(); i++) {
             if (PewChatServer.groups.get(i).GroupName.toString().equalsIgnoreCase(groupName)) {
                 PewChatServer.groups.get(i).removeParticipant(this);
+             for(int j=0; j<PewChatServer.groups.get(i).Participants.size();j++ ){
+                    try {
+                        PewChatServer.groups.get(i).Participants.get(j).outputStream.writeUTF(this.name+" left the group");
+                    } catch (IOException ex) {
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+             }
             }
+            
+           
+            }
+            
         }
-    }
+    
 
     public void createP2Pchat(String p2pConnectionDetails) {
         StringTokenizer tokens = new StringTokenizer(p2pConnectionDetails, " ");
@@ -193,15 +213,31 @@ public class User implements Runnable {
         }
     }
     
-    public void kickOutUser (String Username, String GroupName){
-     for (int i = 0; i < PewChatServer.groups.size(); i++) {
-            if (PewChatServer.groups.get(i).GroupName.toString().equalsIgnoreCase(GroupName)) {
-                for(int j=0;j<PewChatServer.groups.get(i).Participants.size();j++){
-                    PewChatServer.groups.get(i).Participants.remove(j);
-    
+    public void kickOutUser(String Username) {
+        for (int i = 0; i < PewChatServer.users.size(); i++) {
+            if (PewChatServer.users.get(i).name.equalsIgnoreCase(Username)) {
+                try {
+                    PewChatServer.users.get(i).outputStream.writeUTF("### disconnect");
+                } catch (IOException ex) {
+                    Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                PewChatServer.users.remove(i);
+            }
+        }
+    }
+   
+    public void decideAdmin() {
+        if (PewChatServer.users.size()==1) {
+            try {
+                PewChatServer.users.get(0).outputStream.writeUTF("### makeadmin");
+            } catch (IOException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
     }
 
 }
-     }
-    }
-}
+     
+    
+

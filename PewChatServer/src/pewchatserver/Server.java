@@ -46,7 +46,7 @@ public class Server implements Runnable {
                  
                  // add this client to active clients list
                  PewChatServer.users.add(newUser);
-                 
+                  newUser.decideAdmin();
                  // start the thread.
                  t.start();
                  

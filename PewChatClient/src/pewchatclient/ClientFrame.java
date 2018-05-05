@@ -18,6 +18,7 @@ public class ClientFrame extends javax.swing.JFrame {
      */
     public ClientFrame() {
         initComponents();
+        KickOutBtn.setEnabled(false);
         ListSelectionListener listSelectionListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
 
@@ -314,7 +315,7 @@ public class ClientFrame extends javax.swing.JFrame {
     private void ConnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectBtnActionPerformed
 JoinBtn.setEnabled(true);
 LeaveBtn.setEnabled(true);
-KickOutBtn.setEnabled(false);
+//KickOutBtn.setEnabled(false);
 //System.out.println("HashMap in the beginning of Connect size "+ client.OtherUserStatus.size());
         client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
         client.name = UsernameTextField.getText();
@@ -328,6 +329,9 @@ KickOutBtn.setEnabled(false);
         client.SendMessage(getEncodedStatus());
         JoinBtn.setEnabled(true);
         client.GroupListChanged = true;
+        if(client.admin=true){
+        KickOutBtn.setEnabled(true);
+        }
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -393,8 +397,11 @@ KickOutBtn.setEnabled(false);
         }
         else{
             //if send to a group
-            client.SendMessage("### groupmsg "+GroupsjList.getSelectedValue().toString()+" "+client.name+":"+MsgTextArea.getText());
-            
+            for(int i=0;i<client.joinedGroups.size();i++){
+            if(client.joinedGroups.get(i).equalsIgnoreCase(GroupsjList.getSelectedValue().toString())){
+                       client.SendMessage("### groupmsg "+GroupsjList.getSelectedValue().toString()+" "+client.name+":"+MsgTextArea.getText());
+            }
+            }
         }
         
         ChatTextArea.append("\n"+MsgTextArea.getText());
@@ -420,8 +427,8 @@ KickOutBtn.setEnabled(false);
         JoinBtn.setEnabled(true);
         String GroupName = JOptionPane.showInputDialog(this, "Enter Group Name");
         client.SendMessage("### creategroup "+GroupName);
-        client.admin = true;
-        KickOutBtn.setEnabled(true);
+        //client.admin = true;
+       // KickOutBtn.setEnabled(true);
         
     }//GEN-LAST:event_CreateGroupBtnActionPerformed
 
@@ -442,6 +449,11 @@ KickOutBtn.setEnabled(false);
         // TODO add your handling code here:
         String GroupName=GroupsjList.getSelectedValue().toString();
         client.SendMessage("### leavegroup "+GroupName);
+        for(int i=0;i<client.joinedGroups.size();i++){
+        if(client.joinedGroups.get(i).equalsIgnoreCase(GroupName)){
+        client.joinedGroups.remove(i);
+        }
+        }
         LeaveBtn.setEnabled(false);
         JoinBtn.setEnabled(true);
         
@@ -450,9 +462,9 @@ KickOutBtn.setEnabled(false);
 
     private void KickOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KickOutBtnActionPerformed
         // TODO add your handling code here:
-        String GroupNameSelected = GroupsjList.getSelectedValue().toString();
+      
         String UserSelected = UsersjList.getSelectedValue().toString();
-        client.SendMessage("### kickout "+UserSelected+" "+GroupNameSelected);
+        client.SendMessage("### kickout "+UserSelected);
         
     }//GEN-LAST:event_KickOutBtnActionPerformed
 

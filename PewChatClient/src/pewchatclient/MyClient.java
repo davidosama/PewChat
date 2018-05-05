@@ -86,8 +86,18 @@ public class MyClient {
                                 GroupListChanged=true;
                                 System.out.println("GrouListChanged is set to true");
                             }
+                            
+                            else if(settingMsg.equals("makeadmin")){
+                            admin = true;
+                            }
+                            
+                            else if(settingMsg.equals("disconnect")){
+                            closeConnection();
+                            }
                             //else if(settingMsg.equals())
-                        } else {
+                        }
+                        
+                        else {
                             System.out.println("Message received: " + msg);
                             Messages.append("\n").append(msg);
                             newMessage = true;
