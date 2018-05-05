@@ -76,11 +76,13 @@ public class User implements Runnable {
             switch (currentToken) {
                 case "myname":
                     this.name = tokens.nextToken();
+                    updateStatus(message);
                     broadcastStatus();
-                     broadcastGroupNames();
+                    broadcastGroupNames();
                     break;
                 case "mystatus":
                     this.status = tokens.nextToken();
+                    updateStatus(message);
                     broadcastStatus();
                     break;
                 case "creategroup":
@@ -154,10 +156,11 @@ public class User implements Runnable {
     }
 
     public void broadcastStatus() {
-        StringBuffer message = new StringBuffer("### statusbroadcast\n");
-
+        System.out.println("Sending broadcast message to " + PewChatServer.users.size() + " client(s)");
+        StringBuffer message = new StringBuffer("### statusbroadcast \n");
+        
         for (User user : PewChatServer.users) {
-            message.append(message + user.name + " " + user.status + " \n");
+            message.append(user.name + " " + user.status + " \n");
         }
 
         for (User user : PewChatServer.users) {
@@ -234,5 +237,18 @@ public class User implements Runnable {
             msg.append(tokens.nextToken());
         }
         return msg;
+    }
+    
+    public void updateStatus(String message) {
+        StringTokenizer tokens = new StringTokenizer(message, " ");
+        if(tokens.nextToken().equals("###")){
+            if(tokens.nextToken().equals("myname")){
+                this.name = tokens.nextToken();
+                this.status = tokens.nextToken();
+            }
+            else if (tokens.nextToken().equals("mystatus")){
+                this.status = tokens.nextToken();
+            }
+        }
     }
 }
