@@ -13,6 +13,8 @@ public class ClientFrame extends javax.swing.JFrame {
     boolean userslistLastClick=false;
     String LastGroupSelected="";
     //boolean changedGroupSelection=false;
+    DefaultListModel<String> UserslistModel = new DefaultListModel<String>();
+
     
 
     /**
@@ -54,7 +56,7 @@ public class ClientFrame extends javax.swing.JFrame {
                 }
             };
 
-        
+        UsersjList.setModel(UserslistModel);
         UsersjList.addListSelectionListener(GroupListListener);
         GroupsjList.addListSelectionListener(GroupListListener);
 
@@ -74,6 +76,20 @@ public class ClientFrame extends javax.swing.JFrame {
         }
         else return "Error";
    }
+    
+    public String getCurrentStatus() {
+        if (StatusComboBox.getSelectedItem() == "Online") {
+            return "Online";
+        } else if (StatusComboBox.getSelectedItem() == "Busy") {
+            return "Busy";
+        } else if (StatusComboBox.getSelectedItem() == "Away") {
+            return "Away";
+        } else if (StatusComboBox.getSelectedItem() == "Offline") {
+            return "Offline";
+        } else {
+            return "Error";
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -322,22 +338,21 @@ public class ClientFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_DisconnectBtnActionPerformed
 
     private void ConnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectBtnActionPerformed
-JoinBtn.setEnabled(true);
-LeaveBtn.setEnabled(true);
-KickOutBtn.setEnabled(false);
-//System.out.println("HashMap in the beginning of Connect size "+ client.OtherUserStatus.size());
-        client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
-        client.name = UsernameTextField.getText();
-        client.SendMessage("### myname "+UsernameTextField.getText());
+        JoinBtn.setEnabled(true);
+        LeaveBtn.setEnabled(true);
+        KickOutBtn.setEnabled(false);
         DisconnectBtn.setEnabled(true);
         ConnectBtn.setEnabled(false);
         SendBtn.setEnabled(true);
         CreateGroupBtn.setEnabled(true);
         StatusComboBox.setEnabled(true);
+//System.out.println("HashMap in the beginning of Connect size "+ client.OtherUserStatus.size());
+        client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
+        client.name = UsernameTextField.getText();
+        client.SendMessage("### myname " + UsernameTextField.getText() + " " + getCurrentStatus());
         client.ReadMessage();
-        client.SendMessage(getEncodedStatus());
-        JoinBtn.setEnabled(true);
         client.GroupListChanged = true;
+        
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -347,32 +362,44 @@ KickOutBtn.setEnabled(false);
                     if(client.newMessage == true){
                         ChatTextArea.setText(client.Messages.toString());
                         client.newMessage = false;
-                    }  
+                    } 
+                    if (client.UserStatusChanged == true) {
+                        System.out.println("it should have update users JList");
+//                        DefaultListModel<String> UserslistModel = new DefaultListModel<String>();
+//                        UserslistModel.clear();
+                        UserslistModel = new DefaultListModel<String>();
+                        for (int i = 0; i < client.OtherUserStatus.size(); i++) {
+                            User user = client.OtherUserStatus.get(i);
+                            System.out.println(user.name + " is " + user.status);
+                            UserslistModel.addElement(user.name + " - " + user.status);
+                            System.out.println("updating status........");
+                        }
+                        UsersjList.setModel(UserslistModel);
+                        client.UserStatusChanged = false;
+                    }
                       
                 }
             }
         });
         t.start();
-        
-        Thread t2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    System.out.println("Check UsersStatusArea is running");
-                    if (client.UserStatusChanged == true) {
-                        for ( int i = 0; i < client.OtherUserStatus.size(); i++){
-                            User user = client.OtherUserStatus.get(i);
-                            //show all users with their statuses in the JList
-//                            UsersjList.add(i, user.name+" - "+user.status);
-                        }
-                        client.UserStatusChanged=false;
-                    }
-                }
-            }
-        });
-        t2.start();
-        
-        
+//        
+//        Thread t2 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    System.out.println("Check UsersStatusArea is running");
+//                    if (client.UserStatusChanged == true) {
+//                        for ( int i = 0; i < client.OtherUserStatus.size(); i++){
+//                            User user = client.OtherUserStatus.get(i);
+//                            //show all users with their statuses in the JList
+////                            UsersjList.add(i, user.name+" - "+user.status);
+//                        }
+//                        client.UserStatusChanged=false;
+//                    }
+//                }
+//            }
+//        });
+//        t2.start();
         Thread groupThreads = new Thread(new Runnable() {
             @Override
             public void run() {
