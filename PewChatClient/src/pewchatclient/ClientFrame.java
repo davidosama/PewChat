@@ -21,8 +21,9 @@ public class ClientFrame extends javax.swing.JFrame {
         KickOutBtn.setEnabled(false);
         ListSelectionListener listSelectionListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
-
+                try{
                 userslistLastClick = false;
+                
                 String selectedGroup = GroupsjList.getSelectedValue().toString();
                 boolean disabled = false;
                 for (int i = 0; i < client.joinedGroups.size(); i++) {
@@ -35,8 +36,11 @@ public class ClientFrame extends javax.swing.JFrame {
                 } else {
                     JoinBtn.setEnabled(false);
                 }
+                }catch(Exception e){
+                    System.out.println("EXCEPTION!!!!!!!!"+e.getMessage()+"   "+"   "+e.toString());
+                }
             }
-            ;
+            };
         
         
         ListSelectionListener userslistListener = new ListSelectionListener() {
@@ -45,7 +49,7 @@ public class ClientFrame extends javax.swing.JFrame {
                 }
             };
 
-        };
+        
         UsersjList.addListSelectionListener(listSelectionListener);
         GroupsjList.addListSelectionListener(listSelectionListener);
 
