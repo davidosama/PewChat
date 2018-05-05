@@ -26,6 +26,7 @@ public class ClientFrame extends javax.swing.JFrame {
                 //changedGroupSelection=true;
                 userslistLastClick = false;
                 String selectedGroup = GroupsjList.getSelectedValue().toString();
+                client.GroupSelected=selectedGroup;
                 LastGroupSelected=selectedGroup;
                 boolean disabled = false;
                 for (int i = 0; i < client.joinedGroups.size(); i++) {
@@ -423,9 +424,9 @@ KickOutBtn.setEnabled(false);
             client.SendMessage("### groupmsg "+GroupsjList.getSelectedValue().toString()+" "+client.name+":"+MsgTextArea.getText());
             
         }
-        
+        client.newMessage=true;
         ChatTextArea.append("\n"+MsgTextArea.getText());
-        MsgTextArea.setText("");//to clear the chat text area after sending
+        MsgTextArea.setText(""); //to clear the chat text area after sending
         
     }//GEN-LAST:event_SendBtnActionPerformed
 

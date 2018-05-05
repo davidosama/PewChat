@@ -23,6 +23,7 @@ public class MyClient {
     boolean GroupListChanged;
     ArrayList <String> groupNames;
     ArrayList<String> joinedGroups;
+    String GroupSelected="";
 
     public DataInputStream getInput() {
         return input;
@@ -80,15 +81,40 @@ public class MyClient {
                             }
                             else if(settingMsg.equals("groupnamesbroadcast"))
                             {
-                                System.out.println("I ammm here babe");
-                                //String g = tokens.nextToken();
                                 setGroupNames(tokens);
                                 GroupListChanged=true;
                                 System.out.println("GrouListChanged is set to true");
                             }
                             else if(settingMsg.equals("history")){
-                                newMessage = true;
                                 Messages=Extract(tokens);
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                newMessage = true;
+                            }
+                            else if(settingMsg.equals("appendgroupmsg")){
+                                Messages.append("\n"+Extract(tokens));
+                                System.out.println("asd2");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                System.out.println("asd");
+                                
+                                System.out.println("Extract Tokens"+Extract(tokens));
+                                
+                                newMessage = true;
                                 
                                 
                             }
@@ -107,16 +133,7 @@ public class MyClient {
                     System.out.println("Exception");
                 }
             }
-
-            private StringBuffer Extract(StringTokenizer tokens) {
-                StringBuffer msg = new StringBuffer();
-                while(tokens.hasMoreTokens()){
-                    msg.append(tokens.nextToken());
-                }
-                return msg;
-            }
-
-        });
+    });
         System.out.println("HashMap in the end of readMessage size " + OtherUserStatus.size());
         readThread.start();
     }
@@ -166,6 +183,14 @@ public class MyClient {
         System.out.println("Out of for loop in setGroupNamec");
         groupNames=names;
         GroupListChanged=true;
+    }
+    
+    private StringBuffer Extract(StringTokenizer tokens) {
+        StringBuffer msg = new StringBuffer();
+        while (tokens.hasMoreTokens()) {
+            msg.append(tokens.nextToken());
+        }
+        return msg;
     }
 
 }

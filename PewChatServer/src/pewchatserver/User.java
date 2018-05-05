@@ -96,7 +96,7 @@ public class User implements Runnable {
                     createP2Pchat(message);
                 case "groupmsg":
                     String GN =tokens.nextToken();
-                    String msg=tokens.nextToken();
+                    String msg=Extract(tokens).toString();
                     sendMessageToGroup(GN,msg);
                     break;
                 case "givemehist":
@@ -185,14 +185,18 @@ public class User implements Runnable {
     public void sendMessageToGroup (String GN, String msg){
         for (int i = 0; i < PewChatServer.groups.size(); i++) {
             if (PewChatServer.groups.get(i).GroupName.toString().equalsIgnoreCase(GN)) {
+                PewChatServer.groups.get(i).Messages.append(msg+"\n");
                 for(int j=0;j<PewChatServer.groups.get(i).Participants.size();j++){
- //                   try {
-                        PewChatServer.groups.get(i).Messages.append(msg+"\n");
-                        //PewChatServer.groups.get(i).Participants.get(j).outputStream.writeUTF(this.name+" : "+msg);
- //                   }
+                    try {
+                        //                   try {
+                        PewChatServer.groups.get(i).Participants.get(j).outputStream.writeUTF("### appendgroupmsg "+msg);
+                        //                   }
 //                    catch (IOException ex) {
 //                        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
 //                    }
+                    } catch (IOException ex) {
+                        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 
             }
@@ -223,5 +227,12 @@ public class User implements Runnable {
                 
             }
         }
+    }
+    private StringBuffer Extract(StringTokenizer tokens) {
+        StringBuffer msg = new StringBuffer();
+        while (tokens.hasMoreTokens()) {
+            msg.append(tokens.nextToken());
+        }
+        return msg;
     }
 }
