@@ -1,5 +1,5 @@
 send below string after server connection to tell the server your name is david
-### myname david
+### myname david Online
 
 send below string after server connection to tell the server your status is online
 ### mystatus online
@@ -29,7 +29,7 @@ send to the server saying give me this group's chat history
 ### givemehist groupname
 
 server is broadcasting all users' statues
-### statusbroadcast\n
+### statusbroadcast \n
 david online \n
 toni busy \n
 
