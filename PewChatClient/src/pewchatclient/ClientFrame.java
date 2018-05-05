@@ -260,22 +260,21 @@ public class ClientFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(GroupsLabel)
                         .addGap(18, 18, 18)
-<<<<<<< HEAD
+/*<<<<<<< HEAD
                         .addComponent(CreateGroupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(UserStatusLabel)
-=======
-                        .addComponent(StatusLabel)
+=======*/
+                       .addComponent(StatusLabel)
                         .addGap(18, 18, 18)
                         .addComponent(StatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(173, Short.MAX_VALUE))
->>>>>>> Server
+                       .addContainerGap(173, Short.MAX_VALUE))//*/
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(JoinBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                         .addComponent(LeaveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(0, 51, Short.MAX_VALUE))
+               .addGap(0, 51, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -350,7 +349,6 @@ KickOutBtn.setEnabled(false);
         CreateGroupBtn.setEnabled(true);
         StatusComboBox.setEnabled(true);
         client.ReadMessage();
-<<<<<<< HEAD
 //        client.SendMessage(getEncodedStatus());
 //        JoinBtn.setEnabled(true);
         client.GroupListChanged = true;
