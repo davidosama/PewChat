@@ -86,6 +86,12 @@ public class MyClient {
                                 GroupListChanged=true;
                                 System.out.println("GrouListChanged is set to true");
                             }
+                            else if(settingMsg.equals("history")){
+                                newMessage = true;
+                                Messages=Extract(tokens);
+                                
+                                
+                            }
                             //else if(settingMsg.equals())
                         } else {
                             System.out.println("Message received: " + msg);
@@ -100,6 +106,14 @@ public class MyClient {
                 } catch (Exception ex) {
                     System.out.println("Exception");
                 }
+            }
+
+            private StringBuffer Extract(StringTokenizer tokens) {
+                StringBuffer msg = new StringBuffer();
+                while(tokens.hasMoreTokens()){
+                    msg.append(tokens.nextToken());
+                }
+                return msg;
             }
 
         });

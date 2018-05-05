@@ -25,6 +25,9 @@ send Message to a group
 server broadcast groupnames to all clients
 ### groupnamesbroadcast StringBufferOfAllGroupNames
 
+send to the server saying give me this group's chat history
+### givemehist groupname
+
 server is broadcasting all users' statues
 ### statusbroadcast\n
 david online \n

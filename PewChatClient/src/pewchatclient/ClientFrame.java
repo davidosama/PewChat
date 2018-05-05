@@ -11,6 +11,8 @@ public class ClientFrame extends javax.swing.JFrame {
     MyClient client ;
     static String msgRecieved;
     boolean userslistLastClick=false;
+    String LastGroupSelected="";
+    //boolean changedGroupSelection=false;
     
 
     /**
@@ -18,16 +20,18 @@ public class ClientFrame extends javax.swing.JFrame {
      */
     public ClientFrame() {
         initComponents();
-        ListSelectionListener listSelectionListener = new ListSelectionListener() {
+        ListSelectionListener GroupListListener = new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent listSelectionEvent) {
                 try{
+                //changedGroupSelection=true;
                 userslistLastClick = false;
-                
                 String selectedGroup = GroupsjList.getSelectedValue().toString();
+                LastGroupSelected=selectedGroup;
                 boolean disabled = false;
                 for (int i = 0; i < client.joinedGroups.size(); i++) {
                     if (client.joinedGroups.get(i).equals(selectedGroup)) {
                         disabled = true;
+                        client.SendMessage("### givemehist "+selectedGroup);
                     }
                 }
                 if (!disabled) {
@@ -35,9 +39,10 @@ public class ClientFrame extends javax.swing.JFrame {
                 } else {
                     JoinBtn.setEnabled(false);
                 }
-                }catch(Exception e){
+                }catch(Exception e){ 
                     System.out.println("EXCEPTION!!!!!!!!"+e.getMessage()+"   "+"   "+e.toString());
                 }
+                
             }
             };
         
@@ -49,8 +54,8 @@ public class ClientFrame extends javax.swing.JFrame {
             };
 
         
-        UsersjList.addListSelectionListener(listSelectionListener);
-        GroupsjList.addListSelectionListener(listSelectionListener);
+        UsersjList.addListSelectionListener(GroupListListener);
+        GroupsjList.addListSelectionListener(GroupListListener);
 
     }
     public String getEncodedStatus(){
@@ -342,6 +347,7 @@ KickOutBtn.setEnabled(false);
                         ChatTextArea.setText(client.Messages.toString());
                         client.newMessage = false;
                     }  
+                      
                 }
             }
         });
@@ -386,6 +392,23 @@ KickOutBtn.setEnabled(false);
             }
         });
         groupThreads.start();
+        
+//        Thread groupMsgs = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//                    System.out.println("group selections");
+//                    if(changedGroupSelection){
+//                          String selectedGroup=GroupsjList.getSelectedValue().toString();
+//                          changedGroupSelection=false;
+//                          while(selectedGroup==GroupsjList.getSelectedValue().toString()){
+//                              client.SendMessage("### givemehist "+selectedGroup);
+//                          }
+//                      }
+//                }
+//            }
+//        });
+//        groupMsgs.start();
     }//GEN-LAST:event_ConnectBtnActionPerformed
 
     private void SendBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendBtnActionPerformed

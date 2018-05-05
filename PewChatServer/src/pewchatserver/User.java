@@ -98,6 +98,10 @@ public class User implements Runnable {
                     String GN =tokens.nextToken();
                     String msg=tokens.nextToken();
                     sendMessageToGroup(GN,msg);
+                    break;
+                case "givemehist":
+                    sendMsgHistBack(tokens.nextToken());
+                    break;
                 case "kickout":
                     String UserN = tokens.nextToken();
                     String GroupN = tokens.nextToken();
@@ -182,11 +186,13 @@ public class User implements Runnable {
         for (int i = 0; i < PewChatServer.groups.size(); i++) {
             if (PewChatServer.groups.get(i).GroupName.toString().equalsIgnoreCase(GN)) {
                 for(int j=0;j<PewChatServer.groups.get(i).Participants.size();j++){
-                    try {
-                        PewChatServer.groups.get(i).Participants.get(j).outputStream.writeUTF(msg);
-                    } catch (IOException ex) {
-                        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+ //                   try {
+                        PewChatServer.groups.get(i).Messages.append(msg+"\n");
+                        //PewChatServer.groups.get(i).Participants.get(j).outputStream.writeUTF(this.name+" : "+msg);
+ //                   }
+//                    catch (IOException ex) {
+//                        Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
                 }
                 
             }
@@ -203,5 +209,19 @@ public class User implements Runnable {
 
 }
      }
+    }
+
+    private void sendMsgHistBack(String GroupName) {
+        for (int i = 0; i < PewChatServer.groups.size(); i++) {
+            if (PewChatServer.groups.get(i).GroupName.toString().equalsIgnoreCase(GroupName)) {
+                StringBuffer history = PewChatServer.groups.get(i).Messages;
+                try {
+                    this.outputStream.writeUTF("### history "+history.toString());
+                } catch (IOException ex) {
+                    Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+        }
     }
 }
