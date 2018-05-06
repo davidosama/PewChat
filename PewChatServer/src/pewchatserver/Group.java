@@ -34,12 +34,12 @@ public class Group {
         
     }
 
-    public void removeParticipant(User user) {
-for(int i =0; i<Participants.size();i++){
-    if(Participants.get(i).name.equalsIgnoreCase(user.name)){
-Participants.remove(i);
-    }
-}
+     public void removeParticipant(User user) {
+        for (int i = 0; i < Participants.size(); i++) {
+            if (Participants.get(i).name.equalsIgnoreCase(user.name)) {
+                Participants.remove(i);
+            }
+        }
     }
 
 }

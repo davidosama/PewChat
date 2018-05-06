@@ -24,6 +24,7 @@ public class MyClient {
     ArrayList <String> groupNames;
     ArrayList<String> joinedGroups;
     String GroupSelected="";
+    int ID =0;
 
     public DataInputStream getInput() {
         return input;
@@ -36,6 +37,7 @@ public class MyClient {
     public MyClient(String address, int port) {
         // establish a connection
         try {
+            ID++;
             System.out.println("Connected");
             socket = new Socket(address, port);
             // takes input from terminal
@@ -44,6 +46,7 @@ public class MyClient {
             // sends output to the socket
             out = new DataOutputStream(socket.getOutputStream());
             isConnected = true;
+            admin=false;
             GroupListChanged=false;
             groupNames=new ArrayList<String>();
             joinedGroups=new ArrayList<String>();
@@ -88,6 +91,17 @@ public class MyClient {
                                 setGroupNames(tokens);
                                 GroupListChanged=true;
                                 System.out.println("GrouListChanged is set to true");
+                            }
+                             else if(settingMsg.equals("makeadmin")){
+                           admin=true;
+                           PewChatClient.frame.activateKickOutBtn();
+                            System.out.println("I AM ADMIN");
+                            }
+                            
+                            else if(settingMsg.equals("disconnect")){
+                             PewChatClient.frame.resetWindow();
+                             closeConnection();
+                            
                             }
                             else if(settingMsg.equals("history")){
                                 Messages=Extract(tokens);
@@ -185,10 +199,12 @@ public class MyClient {
             this.out.close();
             this.input.close();
             this.socket.close();
+            
         } catch (IOException ex) {
             ex.printStackTrace();
             System.out.println("IOException inside closeConnection()");
         }
+        
     }
     
     public void setGroupNames(StringTokenizer tokens){

@@ -46,7 +46,11 @@ public class Server implements Runnable {
                  
                  // add this client to active clients list
                  PewChatServer.users.add(newUser);
-                 
+              //   newUser.decideAdmin();
+//                 if(PewChatServer.users.size()==1){
+//                 newUser.outputStream.writeUTF("### makeadmin");
+//                 System.out.println("ADMIN MADE "+ newUser.name);
+//                 }
                  // start the thread.
                  t.start();
                  
