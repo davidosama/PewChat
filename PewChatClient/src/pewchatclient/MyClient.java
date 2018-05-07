@@ -87,7 +87,20 @@ public class MyClient {
                                 setGroupNames(tokens);
                                 GroupListChanged = true;
                                 System.out.println("GrouListChanged is set to true");
-                            } else if (settingMsg.equals("history")) {
+                            } 
+                            else if(settingMsg.equals("makeadmin")){
+                           admin=true;
+                           PewChatClient.frame.activateKickOutBtn();
+                            System.out.println("I AM ADMIN");
+                            }
+                            
+                            else if(settingMsg.equals("disconnect")){
+                             PewChatClient.frame.resetWindow();
+                             
+                             closeConnection();
+                            
+                            }
+                            else if (settingMsg.equals("history")) {
                                 Messages = Extract(tokens);
                                 newMessage = true;
                             } else if (settingMsg.equals("appendgroupmsg")) {

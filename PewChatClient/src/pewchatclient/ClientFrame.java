@@ -12,13 +12,15 @@ public class ClientFrame extends javax.swing.JFrame {
     String LastGroupSelected = "";
     //boolean changedGroupSelection=false;
     DefaultListModel<String> UserslistModel = new DefaultListModel<String>();
-
+    DefaultListModel <String> listModel  =new DefaultListModel();
     /**
      * Creates new form ClientFrame
      */
     public ClientFrame() {
         initComponents();
+         KickOutBtn.setEnabled(false);
         UsersjList.setModel(UserslistModel);
+        
 
     }
 
@@ -286,10 +288,11 @@ public class ClientFrame extends javax.swing.JFrame {
                         .addGap(64, 64, 64)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(SendBtn)
-                    .addComponent(JoinBtn)
-                    .addComponent(LeaveBtn))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(JoinBtn)
+                        .addComponent(LeaveBtn)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(KickOutBtn)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -307,7 +310,7 @@ public class ClientFrame extends javax.swing.JFrame {
     private void ConnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConnectBtnActionPerformed
         JoinBtn.setEnabled(true);
         LeaveBtn.setEnabled(true);
-        KickOutBtn.setEnabled(false);
+        
         DisconnectBtn.setEnabled(true);
         ConnectBtn.setEnabled(false);
         SendBtn.setEnabled(true);
@@ -432,18 +435,18 @@ public class ClientFrame extends javax.swing.JFrame {
         String GroupName = JOptionPane.showInputDialog(this, "Enter Group Name");
         client.SendMessage("### creategroup " + GroupName);
         client.admin = true;
-        KickOutBtn.setEnabled(true);
+      
 
     }//GEN-LAST:event_CreateGroupBtnActionPerformed
 
     private void JoinBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JoinBtnActionPerformed
         // TODO add your handling code here:
-        String GroupName = GroupsjList.getSelectedValue().toString();
+               String GroupName=GroupsjList.getSelectedValue().toString();
         client.joinedGroups.add(GroupName);
         JoinBtn.setEnabled(false);
-        client.SendMessage("### joingroup " + GroupName);
+        client.SendMessage("### joingroup "+GroupName);
         System.out.println("JOINED GROUPS");
-        for (int i = 0; i < client.joinedGroups.size(); i++) {
+        for(int i =0;i<client.joinedGroups.size();i++){
             System.out.println(client.joinedGroups.get(i));
         }
 
@@ -451,20 +454,21 @@ public class ClientFrame extends javax.swing.JFrame {
 
     private void LeaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LeaveBtnActionPerformed
         // TODO add your handling code here:
-        String GroupName = GroupsjList.getSelectedValue().toString();
-        client.SendMessage("### leavegroup " + GroupName);
-        LeaveBtn.setEnabled(false);
-        JoinBtn.setEnabled(true);
+        String GroupName=GroupsjList.getSelectedValue().toString();
+        client.SendMessage("### leavegroup "+GroupName);
+        for(int i=0;i<client.joinedGroups.size();i++){
+        if(client.joinedGroups.get(i).equalsIgnoreCase(GroupName)){
+        client.joinedGroups.remove(i);
+        }
+        }
 
 
     }//GEN-LAST:event_LeaveBtnActionPerformed
 
     private void KickOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KickOutBtnActionPerformed
         // TODO add your handling code here:
-        String GroupNameSelected = GroupsjList.getSelectedValue().toString();
         String UserSelected = UsersjList.getSelectedValue().toString();
-        client.SendMessage("### kickout " + UserSelected + " " + GroupNameSelected);
-
+        client.SendMessage("### kickout "+UserSelected);
     }//GEN-LAST:event_KickOutBtnActionPerformed
 
     private void UsersjListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_UsersjListMouseClicked
@@ -516,6 +520,22 @@ public class ClientFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_GroupsjListMouseClicked
 
+    public void resetWindow(){
+    JoinBtn.setEnabled(false);
+    LeaveBtn.setEnabled(false);
+    DisconnectBtn.setEnabled(false);
+    KickOutBtn.setEnabled(false);
+    ConnectBtn.setEnabled(false);
+    UserslistModel.clear();
+  listModel.clear();
+   ChatTextArea.setText("");
+   CreateGroupBtn.setEnabled(false);
+    }
+    
+    public void activateKickOutBtn(){
+    KickOutBtn.setEnabled(true);
+    }
+    
     /**
      * @param args the command line arguments
      */
