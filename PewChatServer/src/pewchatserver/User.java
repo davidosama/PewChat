@@ -80,6 +80,10 @@ public class User implements Runnable {
                     broadcastStatus();
                     broadcastGroupNames();
                     break;
+                case "userinfo":
+                    String info = Extract(tokens).toString();
+                    PewChatServer.AllUsersInfo.add(info);
+                    break;
                 case "mystatus":
                     this.status = tokens.nextToken();
                     updateStatus(message);
@@ -234,7 +238,7 @@ public class User implements Runnable {
     private StringBuffer Extract(StringTokenizer tokens) {
         StringBuffer msg = new StringBuffer();
         while (tokens.hasMoreTokens()) {
-            msg.append(tokens.nextToken());
+            msg.append(tokens.nextToken()+" ");
         }
         return msg;
     }

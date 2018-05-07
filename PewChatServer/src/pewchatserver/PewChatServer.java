@@ -10,6 +10,7 @@ public class PewChatServer {
      */
     static ArrayList<User> users = new ArrayList<User>();
     static ArrayList<Group> groups = new ArrayList<Group>();
+    static ArrayList<String> AllUsersInfo = new ArrayList<String>();
     
     public static void main(String[] args) throws IOException {
         Server server = new Server("localhost", 9999);

@@ -3,8 +3,10 @@ package pewchatclient;
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class MyClient {
+public class MyClient implements Runnable{
     // initialize socket and input output streams
 
     private Socket socket = null;
@@ -24,6 +26,15 @@ public class MyClient {
     ArrayList <String> groupNames;
     ArrayList<String> joinedGroups;
     String GroupSelected="";
+    ArrayList <String> UsersInfo=new ArrayList<String>();
+    String address="";
+    int port;
+    ServerSocket serversocket;
+    Socket ClientSocket;
+    ArrayList<String>PeersMsgHistory = new ArrayList<String>();
+    ArrayList<String> Peers=new ArrayList<>();
+    
+    //Name IP Port Status
 
     public DataInputStream getInput() {
         return input;
@@ -36,6 +47,8 @@ public class MyClient {
     public MyClient(String address, int port) {
         // establish a connection
         try {
+            this.address=address;
+            this.port = port ;
             System.out.println("Connected");
             socket = new Socket(address, port);
             // takes input from terminal
@@ -211,5 +224,49 @@ public class MyClient {
         }
         return msg;
     }
+    public void establishP2PConnection(String peerName) {
+        for (int i =0;i<UsersInfo.size();i++){
+            if(UsersInfo.get(i).contains(peerName)){
+                try {
+                    StringTokenizer tokens = new StringTokenizer(UsersInfo.get(i), " ");
+                    String PeerName = tokens.nextToken();
+                    String PeerIP = tokens.nextToken();
+                    int PeerPort = Integer.parseInt(tokens.nextToken());
+                    PeersMsgHistory.add(PeerName+"\n");
+                   Socket socket = new Socket(PeerIP, PeerPort);
+                   DataInputStream input = new DataInputStream(socket.getInputStream());
+                   DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+                   
 
+                   
+                } catch (IOException ex) {
+                    Logger.getLogger(MyClient.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                // takes input from terminal
+                
+                // sends output to the socket
+                
+            }
+        }
+    }
+    
+    public void acceptP2PConnection(String UserName, String IPaddress, String portNum){
+        
+    }
+
+    @Override
+    public void run() {
+        try {
+            ClientSocket = serversocket.accept();
+            DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+            DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());
+            User u = new User(ClientSocket,inputStream,outputStream);
+            Thread t = new Thread(u);
+        } catch (IOException ex) {
+            Logger.getLogger(MyClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
 }
+
+

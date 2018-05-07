@@ -26,7 +26,7 @@ public class PeerNode implements Runnable {
     private DataOutputStream output;
 
     //PeerNode acting as a Server constructor
-    void PeerNode(String peerUserName) {
+    PeerNode(String peerUserName) {
         this.UserName = peerUserName;
         this.MessageHistory = new StringBuffer();
 
@@ -45,7 +45,7 @@ public class PeerNode implements Runnable {
     }
 
     //PeerNode acting as a client constructor
-    void PeerNode(String UserName, String IPaddress, String portNum) {
+    PeerNode(String UserName, String IPaddress, String portNum) {
         this.UserName = UserName;
         this.IPaddress = IPaddress;
         this.portNum = Integer.parseInt(portNum);

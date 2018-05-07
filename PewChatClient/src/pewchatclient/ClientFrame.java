@@ -53,6 +53,18 @@ public class ClientFrame extends javax.swing.JFrame {
         ListSelectionListener userslistListener = new ListSelectionListener() {
                 public void valueChanged(ListSelectionEvent listSelectionEvent) {
                     userslistLastClick = true;
+                    String peerName = UsersjList.getSelectedValue();
+                    boolean peerfound = false;
+                    for(int i =0;i<client.Peers.size();i++){
+                        if(client.Peers.get(i)==peerName){
+                            //Show MESSAGE HISTORY
+                            peerfound=true;
+                        }
+                    }
+                    if(!peerfound){
+                        client.establishP2PConnection(peerName);
+                        client.Peers.add(peerName);
+                    }
                 }
             };
 
@@ -350,8 +362,15 @@ public class ClientFrame extends javax.swing.JFrame {
         client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
         client.name = UsernameTextField.getText();
         client.SendMessage("### myname " + UsernameTextField.getText() + " " + getCurrentStatus());
+        client.SendMessage("### userinfo "+client.name+" "+AddressTextField.getText()+" "+PortNumTextField.getText());
         client.ReadMessage();
         client.GroupListChanged = true;
+        
+//        MyClient.AllUsersInfo.add(client.name+" "+AddressTextField.getText()+" "+Integer.parseInt(PortNumTextField.getText()));
+//        System.out.println("INFORMATION : "+MyClient.AllUsersInfo.size());
+//        for(int i =0;i<MyClient.AllUsersInfo.size();i++){
+//            System.out.println(MyClient.AllUsersInfo.get(i));
+//        }
         
         Thread t = new Thread(new Runnable() {
             @Override
