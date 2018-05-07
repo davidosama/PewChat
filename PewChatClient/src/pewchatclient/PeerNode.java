@@ -64,8 +64,8 @@ public class PeerNode {
     void SendMessage(String message) {
         try {
             output.writeUTF(message);
-            MessageHistory.append(PewChatClient.frame.client.name).append(" (P2P to ").append(this.UserName).append(" ): ").append(message).append("\n");
-            System.out.println( "Sending a message P2P to " + this.UserName + " : " + message);
+            MessageHistory.append(PewChatClient.frame.client.name).append(" (P2P to ").append(this.UserName).append("): ").append(message).append("\n");
+            System.out.println("Sending a message P2P to " + this.UserName + " : " + message);
         } catch (IOException ex) {
             ex.printStackTrace();
             System.out.println("IOException in PeerNode SendMessage()");
@@ -77,21 +77,21 @@ public class PeerNode {
         Thread readThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.print("");
-                try {
-                    String message = input.readUTF();
-                    MessageHistory.append(UserName).append(" (P2P): ").append(message).append("\n");
-                    System.out.println("P2P message from " + UserName + ": " + message );
-                    newMessage = true;
+                while (true) {
+                    try {
+                        String message = input.readUTF();
+                        MessageHistory.append(UserName).append(" (P2P): ").append(message).append("\n");
+                        System.out.println("P2P message from " + UserName + ": " + message);
+                        newMessage = true;
 
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                    System.out.println("IOException in P2P ReadMessage");
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                        System.out.println("IOException in P2P ReadMessage");
+                    }
                 }
-
             }
         });
-        
+
         readThread.start();
     }
 

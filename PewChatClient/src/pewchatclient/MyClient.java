@@ -65,7 +65,7 @@ public class MyClient {
 //                System.out.println("ReadMessage thread called.");
                 try {
                     while (true) {
-                        System.out.println("ReadMessage while called.");
+//                        System.out.println("ReadMessage while called.");
 
                         // read the message sent to this client
                         String msg = input.readUTF();
@@ -89,32 +89,10 @@ public class MyClient {
                                 System.out.println("GrouListChanged is set to true");
                             } else if (settingMsg.equals("history")) {
                                 Messages = Extract(tokens);
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
                                 newMessage = true;
                             } else if (settingMsg.equals("appendgroupmsg")) {
                                 Messages.append("\n" + Extract(tokens));
-                                System.out.println("asd2");
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
-                                System.out.println("asd");
-
                                 System.out.println("Extract Tokens " + Extract(tokens));
-
                                 newMessage = true;
 
                             }
@@ -157,6 +135,10 @@ public class MyClient {
             //check if last \n is a token
             System.out.println("user: " + userName + " - status: " + userStatus);
 
+            if(userName.equals(this.name)){
+                continue;
+            }
+            
             boolean userAlreadyExist = false;
 
             for (User u : OtherUserStatus) {
