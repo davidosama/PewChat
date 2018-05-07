@@ -1,82 +1,77 @@
 package pewchatclient;
 
+import java.util.StringTokenizer;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 public class ClientFrame extends javax.swing.JFrame {
-    
-    
-    MyClient client ;
+
+    MyClient client;
     static String msgRecieved;
-    boolean userslistLastClick=false;
-    String LastGroupSelected="";
+    boolean userslistLastClick = false;
+    String LastGroupSelected = "";
     //boolean changedGroupSelection=false;
     DefaultListModel<String> UserslistModel = new DefaultListModel<String>();
-
-    
 
     /**
      * Creates new form ClientFrame
      */
     public ClientFrame() {
         initComponents();
-        ListSelectionListener GroupListListener = new ListSelectionListener() {
-            public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                try{
-                //changedGroupSelection=true;
-                userslistLastClick = false;
-                String selectedGroup = GroupsjList.getSelectedValue().toString();
-                client.GroupSelected=selectedGroup;
-                LastGroupSelected=selectedGroup;
-                boolean disabled = false;
-                for (int i = 0; i < client.joinedGroups.size(); i++) {
-                    if (client.joinedGroups.get(i).equals(selectedGroup)) {
-                        disabled = true;
-                        client.SendMessage("### givemehist "+selectedGroup);
-                    }
-                }
-                if (!disabled) {
-                    JoinBtn.setEnabled(true);
-                } else {
-                    JoinBtn.setEnabled(false);
-                }
-                }catch(Exception e){ 
-                    System.out.println("EXCEPTION!!!!!!!!"+e.getMessage()+"   "+"   "+e.toString());
-                }
-                
-            }
-            };
-        
-        
-        ListSelectionListener userslistListener = new ListSelectionListener() {
-                public void valueChanged(ListSelectionEvent listSelectionEvent) {
-                    userslistLastClick = true;
-                }
-            };
+//        ListSelectionListener GroupListListener = new ListSelectionListener() {
+//            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+//                try {
+//                    //changedGroupSelection=true;
+//                    userslistLastClick = false;
+//                    String selectedGroup = GroupsjList.getSelectedValue().toString();
+//                    client.GroupSelected = selectedGroup;
+//                    LastGroupSelected = selectedGroup;
+//                    boolean disabled = false;
+//                    for (int i = 0; i < client.joinedGroups.size(); i++) {
+//                        if (client.joinedGroups.get(i).equals(selectedGroup)) {
+//                            disabled = true;
+//                            client.SendMessage("### givemehist " + selectedGroup);
+//                        }
+//                    }
+//                    if (!disabled) {
+//                        JoinBtn.setEnabled(true);
+//                    } else {
+//                        JoinBtn.setEnabled(false);
+//                    }
+//                } catch (Exception e) {
+//                    System.out.println("EXCEPTION!!!!!!!!" + e.getMessage() + "   " + "   " + e.toString());
+//                }
+//
+//            }
+//        };
 
+//        ListSelectionListener userslistListener = new ListSelectionListener() {
+//            public void valueChanged(ListSelectionEvent listSelectionEvent) {
+//                userslistLastClick = true;
+//            }
+//        };
         UsersjList.setModel(UserslistModel);
-        UsersjList.addListSelectionListener(GroupListListener);
-        GroupsjList.addListSelectionListener(GroupListListener);
+//        UsersjList.addListSelectionListener(GroupListListener);
+//        GroupsjList.addListSelectionListener(GroupListListener);
 
     }
-    public String getEncodedStatus(){
-        if(StatusComboBox.getSelectedItem()=="Online"){
+
+    public String getEncodedStatus() {
+        if (StatusComboBox.getSelectedItem() == "Online") {
             return "### mystatus Online";
-        }
-        else if(StatusComboBox.getSelectedItem()=="Busy"){
+        } else if (StatusComboBox.getSelectedItem() == "Busy") {
             return "### mystatus Busy";
-        }
-        else if(StatusComboBox.getSelectedItem()=="Away"){
+        } else if (StatusComboBox.getSelectedItem() == "Away") {
             return "### mystatus Away";
-        }
-        else if(StatusComboBox.getSelectedItem()=="Offline"){
+        } else if (StatusComboBox.getSelectedItem() == "Offline") {
             return "### mystatus Offline";
+        } else {
+            return "Error";
         }
-        else return "Error";
-   }
-    
+    }
+
     public String getCurrentStatus() {
         if (StatusComboBox.getSelectedItem() == "Online") {
             return "Online";
@@ -92,9 +87,7 @@ public class ClientFrame extends javax.swing.JFrame {
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -125,6 +118,7 @@ public class ClientFrame extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         UsersjList = new javax.swing.JList<>();
         KickOutBtn = new javax.swing.JButton();
+        chatp2pBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PewChat");
@@ -184,6 +178,11 @@ public class ClientFrame extends javax.swing.JFrame {
             }
         });
 
+        GroupsjList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                GroupsjListMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(GroupsjList);
 
         GroupsLabel.setText("Groups");
@@ -217,6 +216,11 @@ public class ClientFrame extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        UsersjList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                UsersjListMouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(UsersjList);
 
         KickOutBtn.setText("Kick out");
@@ -226,14 +230,26 @@ public class ClientFrame extends javax.swing.JFrame {
             }
         });
 
+        chatp2pBtn.setText("Chat P2P");
+        chatp2pBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chatp2pBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(KickOutBtn)
+                .addGap(125, 125, 125))
             .addGroup(layout.createSequentialGroup()
                 .addGap(69, 69, 69)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(UsernameLabel)
@@ -251,35 +267,32 @@ public class ClientFrame extends javax.swing.JFrame {
                                 .addComponent(DisconnectBtn)))
                         .addGap(18, 18, 18)
                         .addComponent(PortNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
-                        .addComponent(SendBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
-                .addComponent(StatusLabel)
-                .addGap(18, 18, 18)
-                .addComponent(StatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(174, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(KickOutBtn)
-                .addGap(125, 125, 125))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
+                    .addComponent(SendBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(GroupsLabel)
                         .addGap(18, 18, 18)
-                        .addComponent(CreateGroupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(UserStatusLabel)
+                        .addComponent(StatusLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(StatusComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(174, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(JoinBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                        .addComponent(LeaveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(0, 51, Short.MAX_VALUE))
+                        .addGap(39, 39, 39)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(UserStatusLabel)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(JoinBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                                .addComponent(LeaveBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(GroupsLabel)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(chatp2pBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(CreateGroupBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))))
+                        .addGap(0, 51, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -307,12 +320,14 @@ public class ClientFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
-                        .addGap(28, 28, 28)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(chatp2pBtn)
+                        .addGap(17, 17, 17)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(GroupsLabel)
                             .addComponent(CreateGroupBtn))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -325,7 +340,7 @@ public class ClientFrame extends javax.swing.JFrame {
                     .addComponent(LeaveBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(KickOutBtn)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -347,22 +362,38 @@ public class ClientFrame extends javax.swing.JFrame {
         CreateGroupBtn.setEnabled(true);
         StatusComboBox.setEnabled(true);
 //System.out.println("HashMap in the beginning of Connect size "+ client.OtherUserStatus.size());
-        client = new MyClient(AddressTextField.getText(),Integer.parseInt(PortNumTextField.getText()));
+        client = new MyClient(AddressTextField.getText(), Integer.parseInt(PortNumTextField.getText()));
         client.name = UsernameTextField.getText();
         client.SendMessage("### myname " + UsernameTextField.getText() + " " + getCurrentStatus());
         client.ReadMessage();
         client.GroupListChanged = true;
-        
+
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 System.out.println();
-                while(true){
-                    System.out.println("Check ChatTextArea is running");
-                    if(client.newMessage == true){
-                        ChatTextArea.setText(client.Messages.toString());
-                        client.newMessage = false;
-                    } 
+                while (true) {
+                    System.out.print("");
+                    if (userslistLastClick) {
+                        String JListUserName = UsersjList.getSelectedValue();
+                        if (JListUserName != null) {
+                            StringTokenizer tokens = new StringTokenizer(JListUserName, " ");
+                            String userName = tokens.nextToken();
+                            if (!userName.equals(client.name)) {
+                                for (PeerNode peer : client.p2pChats) {
+                                    if (peer.UserName.equals(userName) && peer.newMessage) {
+                                        ChatTextArea.setText(peer.MessageHistory.toString());
+                                        peer.newMessage = false;
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        if (client.newMessage == true) {
+                            ChatTextArea.setText(client.Messages.toString());
+                            client.newMessage = false;
+                        }
+                    }
                     if (client.UserStatusChanged == true) {
                         System.out.println("it should have update users JList");
 //                        DefaultListModel<String> UserslistModel = new DefaultListModel<String>();
@@ -377,7 +408,7 @@ public class ClientFrame extends javax.swing.JFrame {
                         UsersjList.setModel(UserslistModel);
                         client.UserStatusChanged = false;
                     }
-                      
+
                 }
             }
         });
@@ -404,23 +435,23 @@ public class ClientFrame extends javax.swing.JFrame {
             @Override
             public void run() {
                 while (true) {
-                    System.out.println("Check groupnames is running");
+                    System.out.print("");
                     if (client.GroupListChanged == true) {
-                        System.out.println("GrouListChanged = true");
-                        DefaultListModel listModel=new DefaultListModel();
-                        for (int i =0; i<client.groupNames.size();i++){
+                        System.out.print("");
+                        DefaultListModel listModel = new DefaultListModel();
+                        for (int i = 0; i < client.groupNames.size(); i++) {
                             listModel.addElement(client.groupNames.get(i));
                             System.out.println(client.groupNames.get(i));
                         }
-                        System.out.println("asdkjashkdajshdkajshdakjsdhakjshdaksjdhaksjhdkajhdsas");
+//                        System.out.println("asdkjashkdajshdkajshdakjsdhakjshdaksjdhaksjhdkajhdsas");
                         GroupsjList.setModel(listModel);
-                        client.GroupListChanged=false;
+                        client.GroupListChanged = false;
                     }
                 }
             }
         });
         groupThreads.start();
-        
+
 //        Thread groupMsgs = new Thread(new Runnable() {
 //            @Override
 //            public void run() {
@@ -442,26 +473,38 @@ public class ClientFrame extends javax.swing.JFrame {
     private void SendBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SendBtnActionPerformed
 //        if(GroupsjList.getSel){
 //        }
-        if(userslistLastClick){
+        if (userslistLastClick) {
             //if send to a p2p
-            client.SendMessage("### p2p "+"..el Ip w el adress....."+ UsersjList.getSelectedValue().toString() +MsgTextArea.getText());
-        }
-        else{
+            String JListUserName = UsersjList.getSelectedValue();
+            if (JListUserName != null) {
+                StringTokenizer tokens = new StringTokenizer(JListUserName, " ");
+                String userName = tokens.nextToken();
+                if (!userName.equals(client.name)) {
+                    for (PeerNode peer : client.p2pChats) {
+                        if (peer.UserName.equals(userName)) {
+                            peer.SendMessage(MsgTextArea.getText());
+                            peer.newMessage = true;
+//                            ChatTextArea.append("\n" + client.name + "(P2P to " + peer.UserName + "):" + MsgTextArea.getText());
+                        }
+                    }
+                }
+            }
+        } else {
             //if send to a group
-            client.SendMessage("### groupmsg "+GroupsjList.getSelectedValue().toString()+" "+client.name+":"+MsgTextArea.getText());
-            
+            client.SendMessage("### groupmsg " + GroupsjList.getSelectedValue().toString() + " " + client.name + ":" + MsgTextArea.getText());
+            ChatTextArea.append("\n" + MsgTextArea.getText());
         }
-        client.newMessage=true;
-        ChatTextArea.append("\n"+MsgTextArea.getText());
+        client.newMessage = true;
+
         MsgTextArea.setText(""); //to clear the chat text area after sending
-        
+
     }//GEN-LAST:event_SendBtnActionPerformed
 
     private void StatusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StatusComboBoxActionPerformed
         try {
             if (client.isConnected == true) {
                 client.status = (String) StatusComboBox.getSelectedItem();
-                client.UserStatusChanged=true;
+                client.UserStatusChanged = true;
                 client.SendMessage(getEncodedStatus());
             } else {
 
@@ -474,42 +517,101 @@ public class ClientFrame extends javax.swing.JFrame {
     private void CreateGroupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateGroupBtnActionPerformed
         JoinBtn.setEnabled(true);
         String GroupName = JOptionPane.showInputDialog(this, "Enter Group Name");
-        client.SendMessage("### creategroup "+GroupName);
+        client.SendMessage("### creategroup " + GroupName);
         client.admin = true;
         KickOutBtn.setEnabled(true);
-        
+
     }//GEN-LAST:event_CreateGroupBtnActionPerformed
 
     private void JoinBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JoinBtnActionPerformed
         // TODO add your handling code here:
-        String GroupName=GroupsjList.getSelectedValue().toString();
+        String GroupName = GroupsjList.getSelectedValue().toString();
         client.joinedGroups.add(GroupName);
         JoinBtn.setEnabled(false);
-        client.SendMessage("### joingroup "+GroupName);
+        client.SendMessage("### joingroup " + GroupName);
         System.out.println("JOINED GROUPS");
-        for(int i =0;i<client.joinedGroups.size();i++){
+        for (int i = 0; i < client.joinedGroups.size(); i++) {
             System.out.println(client.joinedGroups.get(i));
         }
-        
+
     }//GEN-LAST:event_JoinBtnActionPerformed
 
     private void LeaveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LeaveBtnActionPerformed
         // TODO add your handling code here:
-        String GroupName=GroupsjList.getSelectedValue().toString();
-        client.SendMessage("### leavegroup "+GroupName);
+        String GroupName = GroupsjList.getSelectedValue().toString();
+        client.SendMessage("### leavegroup " + GroupName);
         LeaveBtn.setEnabled(false);
         JoinBtn.setEnabled(true);
-        
-        
+
+
     }//GEN-LAST:event_LeaveBtnActionPerformed
 
     private void KickOutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KickOutBtnActionPerformed
         // TODO add your handling code here:
         String GroupNameSelected = GroupsjList.getSelectedValue().toString();
         String UserSelected = UsersjList.getSelectedValue().toString();
-        client.SendMessage("### kickout "+UserSelected+" "+GroupNameSelected);
-        
+        client.SendMessage("### kickout " + UserSelected + " " + GroupNameSelected);
+
     }//GEN-LAST:event_KickOutBtnActionPerformed
+
+    //this button is useless and can be removed
+    private void chatp2pBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chatp2pBtnActionPerformed
+        String JListUserName = UsersjList.getSelectedValue();
+        if (JListUserName != null) {
+            StringTokenizer tokens = new StringTokenizer(JListUserName, " ");
+            String userName = tokens.nextToken();
+            if (!userName.equals(client.name)) {
+                PeerNode peer = new PeerNode(userName);
+                client.p2pChats.add(peer);
+            }
+        }
+    }//GEN-LAST:event_chatp2pBtnActionPerformed
+
+    private void UsersjListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_UsersjListMouseClicked
+        String JListUserName = UsersjList.getSelectedValue();
+        boolean userFound = false;
+        if (JListUserName != null) {
+            StringTokenizer tokens = new StringTokenizer(JListUserName, " ");
+            String userName = tokens.nextToken();
+            if (!userName.equals(client.name)) {
+                for (PeerNode peer : client.p2pChats) {
+                    if (peer.UserName.equals(userName)) {
+                        ChatTextArea.setText(peer.MessageHistory.toString());
+                        userFound = true;
+                    }
+                }
+                if (!userFound) {
+                    PeerNode peer = new PeerNode(userName);
+                    client.p2pChats.add(peer);
+                }
+                userslistLastClick = true;
+            }
+        }
+    }//GEN-LAST:event_UsersjListMouseClicked
+
+    private void GroupsjListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GroupsjListMouseClicked
+        try {
+            //changedGroupSelection=true;
+            userslistLastClick = false;
+            String selectedGroup = GroupsjList.getSelectedValue().toString();
+            client.GroupSelected = selectedGroup;
+            LastGroupSelected = selectedGroup;
+            boolean disabled = false;
+            for (int i = 0; i < client.joinedGroups.size(); i++) {
+                if (client.joinedGroups.get(i).equals(selectedGroup)) {
+                    disabled = true;
+                    client.SendMessage("### givemehist " + selectedGroup);
+                }
+            }
+            if (!disabled) {
+                JoinBtn.setEnabled(true);
+            } else {
+                JoinBtn.setEnabled(false);
+            }
+        } catch (Exception e) {
+            System.out.println("EXCEPTION!!!!!!!!" + e.getMessage() + "   " + "   " + e.toString());
+        }
+    }//GEN-LAST:event_GroupsjListMouseClicked
 
     /**
      * @param args the command line arguments
@@ -568,6 +670,7 @@ public class ClientFrame extends javax.swing.JFrame {
     private javax.swing.JLabel UsernameLabel;
     private javax.swing.JTextField UsernameTextField;
     private javax.swing.JList<String> UsersjList;
+    private javax.swing.JButton chatp2pBtn;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;

@@ -21,9 +21,10 @@ public class MyClient {
     ArrayList<User> OtherUserStatus = new ArrayList<User>();
     boolean UserStatusChanged = false;
     boolean GroupListChanged;
-    ArrayList <String> groupNames;
+    ArrayList<String> groupNames;
     ArrayList<String> joinedGroups;
-    String GroupSelected="";
+    String GroupSelected = "";
+    ArrayList<PeerNode> p2pChats = new ArrayList<PeerNode>();
 
     public DataInputStream getInput() {
         return input;
@@ -44,9 +45,9 @@ public class MyClient {
             // sends output to the socket
             out = new DataOutputStream(socket.getOutputStream());
             isConnected = true;
-            GroupListChanged=false;
-            groupNames=new ArrayList<String>();
-            joinedGroups=new ArrayList<String>();
+            GroupListChanged = false;
+            groupNames = new ArrayList<String>();
+            joinedGroups = new ArrayList<String>();
 
         } catch (UnknownHostException u) {
             System.out.println(u);
@@ -57,11 +58,11 @@ public class MyClient {
     }
 
     void ReadMessage() {
-        System.out.println("ReadMessage called.");
+//        System.out.println("ReadMessage called.");
         readThread = new Thread(new Runnable() {
             @Override
             public void run() {
-                System.out.println("ReadMessage thread called.");
+//                System.out.println("ReadMessage thread called.");
                 try {
                     while (true) {
                         System.out.println("ReadMessage while called.");
@@ -72,25 +73,22 @@ public class MyClient {
                         if (tokens.nextToken().equals("###")) {
                             System.out.println("Server message received: " + msg);
                             String settingMsg = tokens.nextToken();
-                            System.out.println("settingMsg"+settingMsg);
-                            
+                            System.out.println("settingMsg: " + settingMsg);
+
                             if (settingMsg.equals("p2p")) {
                                 String IP = tokens.nextToken();
                                 String PortNum = tokens.nextToken();
                                 String UserName = tokens.nextToken();
-                                //PeerNode PN = new PeerNode(UserName, IP, PortNum);
-                            }
-                            else if (settingMsg.equals("statusbroadcast")) {
+                                PeerNode peer = new PeerNode(UserName, IP, PortNum);
+                                p2pChats.add(peer);
+                            } else if (settingMsg.equals("statusbroadcast")) {
                                 updateUsersStatuses(msg);
-                            }
-                            else if(settingMsg.equals("groupnamesbroadcast"))
-                            {
+                            } else if (settingMsg.equals("groupnamesbroadcast")) {
                                 setGroupNames(tokens);
-                                GroupListChanged=true;
+                                GroupListChanged = true;
                                 System.out.println("GrouListChanged is set to true");
-                            }
-                            else if(settingMsg.equals("history")){
-                                Messages=Extract(tokens);
+                            } else if (settingMsg.equals("history")) {
+                                Messages = Extract(tokens);
                                 System.out.println("asd");
                                 System.out.println("asd");
                                 System.out.println("asd");
@@ -102,9 +100,8 @@ public class MyClient {
                                 System.out.println("asd");
                                 System.out.println("asd");
                                 newMessage = true;
-                            }
-                            else if(settingMsg.equals("appendgroupmsg")){
-                                Messages.append("\n"+Extract(tokens));
+                            } else if (settingMsg.equals("appendgroupmsg")) {
+                                Messages.append("\n" + Extract(tokens));
                                 System.out.println("asd2");
                                 System.out.println("asd");
                                 System.out.println("asd");
@@ -115,12 +112,11 @@ public class MyClient {
                                 System.out.println("asd");
                                 System.out.println("asd");
                                 System.out.println("asd");
-                                
-                                System.out.println("Extract Tokens"+Extract(tokens));
-                                
+
+                                System.out.println("Extract Tokens " + Extract(tokens));
+
                                 newMessage = true;
-                                
-                                
+
                             }
                             //else if(settingMsg.equals())
                         } else {
@@ -137,8 +133,7 @@ public class MyClient {
                     System.out.println("Exception");
                 }
             }
-    });
-        System.out.println("HashMap in the end of readMessage size " + OtherUserStatus.size());
+        });
         readThread.start();
     }
 
@@ -190,20 +185,20 @@ public class MyClient {
             System.out.println("IOException inside closeConnection()");
         }
     }
-    
-    public void setGroupNames(StringTokenizer tokens){
+
+    public void setGroupNames(StringTokenizer tokens) {
         System.out.println("SetGroupnames");
-        ArrayList<String> names=new ArrayList<String>();
-        while(tokens.hasMoreTokens()){
+        ArrayList<String> names = new ArrayList<String>();
+        while (tokens.hasMoreTokens()) {
             String gn = tokens.nextToken();
-            System.out.println("Next Token is "+gn);
+            System.out.println("Next Token is " + gn);
             names.add(gn);
         }
         System.out.println("Out of for loop in setGroupNamec");
-        groupNames=names;
-        GroupListChanged=true;
+        groupNames = names;
+        GroupListChanged = true;
     }
-    
+
     private StringBuffer Extract(StringTokenizer tokens) {
         StringBuffer msg = new StringBuffer();
         while (tokens.hasMoreTokens()) {
